@@ -1,5 +1,6 @@
 package com.sinamo.listener;
 
+import com.sinamo.kernel.SinamoFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -13,8 +14,9 @@ public class SinamoStartUp implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        /*pirmer paso*/
+        /*primer paso*/
         System.out.println("Iniciando Sinamo ver 1.0");
+        SinamoFactory.getSimanoEngine().build();
     }
 
     @Override
