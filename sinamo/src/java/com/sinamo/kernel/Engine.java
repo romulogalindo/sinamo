@@ -1,8 +1,11 @@
 package com.sinamo.kernel;
 
+import com.google.gson.Gson;
+import com.sinamo.bean.Module;
 import com.sinamo.dto.TbModulo;
 import com.sinamo.sys.db.Native;
 import com.sinamo.sys.db.SysDBConector;
+import com.sinamo.sys.json.Script;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,16 +32,20 @@ public class Engine {
     public void build() {
         List<TbModulo> ls = null;
         StatelessSession session = connectors.get("_native").getSessionFactory().openStatelessSession();
+
+        System.out.println("## (DB)consiguiendo lista de modulos");
         try {
             ls = session.getNamedQuery(Native.TBMODULO_ALL).list();
         } catch (Exception ep) {
             ep.printStackTrace();
         }
-        
+
         session.close();
-        
+
         for (TbModulo modulo : ls) {
-            System.out.println("modulo = " + modulo);
+            Script script = new Gson().fromJson(modulo.getScript(), Script.class);
+            Module module = SinamoFactory.buildModule(script);
+            System.out.println("modulo = " + module.getTitle());
         }
     }
 

@@ -1,6 +1,9 @@
 package com.sinamo.kernel;
 
+import com.sinamo.bean.Module;
+import com.sinamo.bean.SimpleModule;
 import com.sinamo.sys.db.Native_PLSQL;
+import com.sinamo.sys.json.Script;
 
 /**
  * SinamoFactory
@@ -18,6 +21,12 @@ public class SinamoFactory {
 
     public static Engine getSimanoEngine() {
         return simanoEngine;
+    }
+
+    public static Module buildModule(Script script) {
+        SimpleModule module = new SimpleModule();
+        module.setTitle(script.getHead().getTitle());
+        return module;
     }
 
 }
