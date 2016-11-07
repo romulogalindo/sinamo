@@ -21,6 +21,7 @@ public class Engine {
 
     Native _native;
     HashMap<String, SysDBConector> connectors = new LinkedHashMap<>();
+    HashMap<String, Module> modules = new LinkedHashMap<>();
 
     public Engine(Native _native) {
         this._native = _native;
@@ -42,11 +43,17 @@ public class Engine {
 
         session.close();
 
-        for (TbModulo modulo : ls) {
-            Script script = new Gson().fromJson(modulo.getScript(), Script.class);
+        for (TbModulo _module : ls) {
+            Script script = new Gson().fromJson(_module.getScript(), Script.class);
             Module module = SinamoFactory.buildModule(script);
+
+            modules.put(_module.getName(), module);
             System.out.println("modulo = " + module.getTitle());
         }
+    }
+
+    public Module getModule(String keyModuleName) {
+        return modules.get(keyModuleName);
     }
 
 }

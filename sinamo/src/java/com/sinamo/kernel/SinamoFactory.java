@@ -2,8 +2,13 @@ package com.sinamo.kernel;
 
 import com.sinamo.bean.Module;
 import com.sinamo.bean.SimpleModule;
+import com.sinamo.bean.items.Register;
 import com.sinamo.sys.db.Native_PLSQL;
+import com.sinamo.sys.json.Row;
 import com.sinamo.sys.json.Script;
+import com.sinamo.sys.json.Section;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SinamoFactory
@@ -26,6 +31,27 @@ public class SinamoFactory {
     public static Module buildModule(Script script) {
         SimpleModule module = new SimpleModule();
         module.setTitle(script.getHead().getTitle());
+        List<com.sinamo.bean.items.Section> sections = new ArrayList<>();
+        for (Section section : script.getSections()) {
+            com.sinamo.bean.items.Section _section = new com.sinamo.bean.items.Section();
+            _section.setTitle(section.getTitle());
+
+            List<Register> _registers = new ArrayList<>();
+            for (Row row : section.getRows()) {
+                Register register = new Register();
+                register.setTitle(row.getTitle());
+                register.setType(row.getType());
+                register.setValue(row.getValue());
+                _registers.add(register);
+            }
+
+            //Agregando los registros a la section
+            _section.setRegisters(_registers);
+            
+            //agregando la section a la lista de sections
+            sections.add(_section);
+        }
+        module.setSections(sections);
         return module;
     }
 

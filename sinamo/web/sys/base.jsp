@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-        <title>Material Design Lite</title>
+        <title>Sinamo ver. 1.0</title>
 
         <!-- Add to homescreen for Chrome on Android -->
         <meta name="mobile-web-app-capable" content="yes">
@@ -37,12 +37,114 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.cyan-light_blue.min.css">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue-indigo.min.css" /> 
+       <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/material.css">
+        <style>
+            .demo-avatar {
+                width: 48px;
+                height: 48px;
+                border-radius: 24px;
+            }
+
+            .demo-drawer .mdl-menu .mdl-menu__item {
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
+            }
+
+            .demo-drawer-header {
+                box-sizing: border-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-flex-direction: column;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-justify-content: flex-end;
+                -ms-flex-pack: end;
+                justify-content: flex-end;
+                padding: 16px;
+                height: 151px;
+                background-image: url('${pageContext.request.contextPath}/images/1200_20100924-IMG-5794-HDR-Edit.jpg');
+                background-size: cover;
+            }
+
+            .demo-avatar-dropdown {
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                position: relative;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
+                width: 100%;
+            }
+            .demo-navigation {
+                -webkit-flex-grow: 1;
+                -ms-flex-positive: 1;
+                flex-grow: 1;
+            }
+            .demo-layout .demo-navigation .mdl-navigation__link {
+                display: -webkit-flex !important;
+                display: -ms-flexbox !important;
+                display: flex !important;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
+                color: rgba(255, 255, 255, 0.56);
+                font-weight: 500;
+            }
+            .demo-layout .demo-navigation .mdl-navigation__link:hover {
+                background-color: #00BCD4;
+                color: #37474F;
+            }
+            .demo-navigation .mdl-navigation__link .material-icons {
+                font-size: 24px;
+                color: rgba(255, 255, 255, 0.56);
+                margin-right: 32px;
+            }
+
+            .demo-content {
+                max-width: 1080px;
+            }
+
+            /*DEMO*/
+            .demo-card-wide.mdl-card {
+                width: 512px;
+            }
+            .demo-card-wide > .mdl-card__title {
+                color: #fff;
+                height: 176px;
+                background: url('${pageContext.request.contextPath}/images/1200_070319-2657-PathToLight.jpg') center / cover;
+            }
+            .demo-card-wide > .mdl-card__menu {
+                color: #fff;
+            }
+        </style>
+
+        <script src="${pageContext.request.contextPath}/js/material.js"></script>
     </head>
     <body>
         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-            <!--Header custom for each module-->
+            <!-- Header custom for each module -->
+            <jsp:include page="_base_header.jsp"/>
+
+            <!-- Dash lateral derecho -->
+            <jsp:include page="_base_dash.jsp"/>
+
+            <!-- Contenido -->
+            <jsp:include page="_base_content.jsp"/>
+
         </div>
     </body>
 </html>
