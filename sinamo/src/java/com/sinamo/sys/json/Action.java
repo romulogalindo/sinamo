@@ -10,6 +10,7 @@ public class Action implements Serializable {
 
     String id;
     String doit;
+    String title;
 
     public Action() {
     }
@@ -28,6 +29,14 @@ public class Action implements Serializable {
 
     public void setDoit(String doit) {
         this.doit = doit;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

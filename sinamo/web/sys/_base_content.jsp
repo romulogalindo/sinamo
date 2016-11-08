@@ -4,6 +4,7 @@
     Author     : romulogalindo
 --%>
 
+<%@page import="com.sinamo.bean.items.Action"%>
 <%@page import="com.sinamo.bean.items.Register"%>
 <%@page import="com.sinamo.bean.Module"%>
 <%@page import="com.sinamo.bean.items.Section"%>
@@ -21,15 +22,19 @@
                     %>
                 </h2>
             </div>
-<!--            <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
-            </div>-->
+            <!--            <div class="mdl-card__supporting-text">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Mauris sagittis pellentesque lacus eleifend lacinia...
+                        </div>-->
             <%
                 System.out.println("-->" + module.getSections());
                 for (Section section : module.getSections()) {
             %>
-            <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-card__supporting-text">
+                <h4 class="mdl-card__subtitle-text sinamo-card--center">
+                    <%=section.getTitle()%>
+                </h4>
+
                 <%
                     for (Register register : section.getRegisters()) {
                 %>
@@ -44,6 +49,19 @@
             <%                }
             %>
 
+            <div class="mdl-card__actions mdl-card--border">
+                <%
+                    for (Action action : module.getActions()) {
+                %>
+                <button id="<%=action.getId()%>" onclick="<%=action.getDoit()%>" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                    <%=action.getTitle()%>
+                </button>
+                <%
+                    }
+                %>
+
+            </div>
+
             <div class="mdl-card__menu">
                 <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                     <i class="material-icons">share</i>
@@ -51,9 +69,9 @@
             </div>
         </div>
         <!--<div class="mdl-grid">-->
-        <div class="mdl-cell mdl-cell--6-col">6</div>
-        <div class="mdl-cell mdl-cell--4-col">4</div>
-        <div class="mdl-cell mdl-cell--2-col">2</div>
+        <!--<div class="mdl-cell mdl-cell--6-col">6</div>-->
+        <!--<div class="mdl-cell mdl-cell--4-col">4</div>-->
+        <!--<div class="mdl-cell mdl-cell--2-col">2</div>-->
         <!--</div>-->
     </div>
 </main>

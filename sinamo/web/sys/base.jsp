@@ -122,13 +122,22 @@
             .demo-card-wide.mdl-card {
                 width: 512px;
             }
+            
             .demo-card-wide > .mdl-card__title {
                 color: #fff;
-                height: 176px;
-                background: url('${pageContext.request.contextPath}/images/1200_070319-2657-PathToLight.jpg') center / cover;
+                /*height: 176px;*/
+                /*background: url('${pageContext.request.contextPath}/images/1200_070319-2657-PathToLight.jpg') center / cover;*/
+                background: #46B6AC;
+                /*url("../assets/demos/dog.png") no-repeat scroll right 15% bottom*/
             }
+            
             .demo-card-wide > .mdl-card__menu {
                 color: #fff;
+            }
+            
+            .sinamo-card--center{
+                text-align: center;
+                line-height: 16px;
             }
         </style>
 

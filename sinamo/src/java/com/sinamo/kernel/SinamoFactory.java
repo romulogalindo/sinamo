@@ -4,6 +4,7 @@ import com.sinamo.bean.Module;
 import com.sinamo.bean.SimpleModule;
 import com.sinamo.bean.items.Register;
 import com.sinamo.sys.db.Native_PLSQL;
+import com.sinamo.sys.json.Action;
 import com.sinamo.sys.json.Row;
 import com.sinamo.sys.json.Script;
 import com.sinamo.sys.json.Section;
@@ -52,6 +53,16 @@ public class SinamoFactory {
             sections.add(_section);
         }
         module.setSections(sections);
+        
+        List<com.sinamo.bean.items.Action> actions = new ArrayList<>();
+        for (Action action : script.getActions()) {
+            com.sinamo.bean.items.Action _action = new com.sinamo.bean.items.Action();
+            _action.setDoit(action.getDoit());
+            _action.setId(action.getId());
+            _action.setTitle(action.getTitle());
+            actions.add(_action);
+        }
+        module.setActions(actions);
         return module;
     }
 
