@@ -15,7 +15,7 @@ import javax.persistence.NamedNativeQuery;
  */
 @NamedNativeQueries({
     @NamedNativeQuery(
-            name = Native.TBMODULO_ALL,
+            name = Native.TBMENU_ALL,
             query = "select * from system.tbmenu",
             resultClass = TbMenu.class)
 })

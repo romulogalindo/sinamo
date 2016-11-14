@@ -2,13 +2,23 @@ package com.sinamo.kernel;
 
 import com.google.gson.Gson;
 import com.sinamo.bean.Module;
+import com.sinamo.bean.items.Action;
+import com.sinamo.bean.items.MenuItem;
 import com.sinamo.dto.TbModulo;
+import com.sinamo.dto.VwMenuModulo;
 import com.sinamo.sys.db.Native;
 import com.sinamo.sys.db.SysDBConector;
 import com.sinamo.sys.json.Script;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import org.hibernate.StatelessSession;
 
 /**
@@ -22,6 +32,10 @@ public class Engine {
     Native _native;
     HashMap<String, SysDBConector> connectors = new LinkedHashMap<>();
     HashMap<String, Module> modules = new LinkedHashMap<>();
+    List<MenuItem> sysmenu = new ArrayList<>();
+
+    //Engine JS Nashron
+    ScriptEngine scriptEngine;
 
     public Engine(Native _native) {
         this._native = _native;
@@ -31,8 +45,24 @@ public class Engine {
     }
 
     public void build() {
-        List<TbModulo> ls = null;
+        //Levantando Motor JS
+        scriptEngine = new ScriptEngineManager().getEngineByName("nashorn");
+        String nashronScript = "";
+        try {
+            nashronScript = SinamoFactory.readFile(new File(this.getClass().getResource("Nashron.js").toURI()));
+        } catch (Exception ep) {
+            ep.printStackTrace();
+        }
+
+        //Iniciando cnx _native
         StatelessSession session = connectors.get("_native").getSessionFactory().openStatelessSession();
+
+        /*Menus*/
+        List<VwMenuModulo> vwmenumodulos = session.getNamedQuery(Native.VWMENUMODULO_ALL).list();
+        sysmenu = SinamoFactory.builMenu(vwmenumodulos);
+
+        /*Modulos*/
+        List<TbModulo> ls = null;
 
         System.out.println("## (DB)consiguiendo lista de modulos");
         try {
@@ -45,15 +75,49 @@ public class Engine {
 
         for (TbModulo _module : ls) {
             Script script = new Gson().fromJson(_module.getScript(), Script.class);
+
             Module module = SinamoFactory.buildModule(script);
 
-            modules.put(_module.getName(), module);
-            System.out.println("modulo = " + module.getTitle());
+            //Script de creacion
+            String funcBuildName = "_func" + _module.getId();
+            nashronScript = nashronScript + " function " + funcBuildName + "(_R){"
+                    + (_module.getData() == null ? "" : _module.getData())
+                    + "}";
+            module.setDataScript(funcBuildName);
+
+            //Script de accion
+            String funcActionName = "execute";
+            nashronScript = nashronScript + " function " + funcActionName + "(_R){"
+                    + (_module.getAction() == null ? "" : _module.getAction())
+                    + "}";
+            funcActionName = funcActionName + "(sJS.build(this,'_act" + _module.getId() + "'))";
+            for (Action action : module.getActions()) {
+                action.setDoit(funcActionName);
+            }
+
+            System.out.println("_module.getId()==>" + _module.getId());
+            modules.put("" + _module.getId(), module);
+            System.out.println("modulo(" + _module.getId() + ") = " + module.getTitle());
+        }
+
+        try {
+            System.out.println("Final script!\n" + nashronScript);
+            scriptEngine.eval(nashronScript);
+        } catch (Exception ep) {
+            ep.printStackTrace();
         }
     }
 
     public Module getModule(String keyModuleName) {
         return modules.get(keyModuleName);
+    }
+
+    public List<MenuItem> getSysmenu() {
+        return sysmenu;
+    }
+
+    public ScriptEngine getScriptEngine() {
+        return scriptEngine;
     }
 
 }

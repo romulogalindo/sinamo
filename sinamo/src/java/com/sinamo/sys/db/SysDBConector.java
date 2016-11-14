@@ -22,6 +22,8 @@ public class SysDBConector {
     public SysDBConector(Native _native) {
         Configuration config = _native.getConfiguration();
         config = config.addAnnotatedClass(com.sinamo.dto.TbModulo.class);
+        config = config.addAnnotatedClass(com.sinamo.dto.TbMenu.class);
+        config = config.addAnnotatedClass(com.sinamo.dto.VwMenuModulo.class);
 
         Properties prop = config.getProperties();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(prop);

@@ -10,9 +10,22 @@ import java.util.List;
  */
 public abstract class Module {
 
+    long pid;
     String title;
-    List<Section> sections;
+    String type;
+    String dataScript;
     List<Action> actions;
+
+    public Module() {
+    }
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
 
     public String getTitle() {
         return title;
@@ -22,13 +35,27 @@ public abstract class Module {
         this.title = title;
     }
 
-    public List<Section> getSections() {
-        return sections;
+    public String getType() {
+        return type;
     }
 
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public String getDataScript() {
+        return dataScript;
+    }
+
+    public void setDataScript(String dataScript) {
+        this.dataScript = dataScript;
+    }
+
+    public abstract List getSections();
+
+    public abstract void setSections(List sections);
+
+    public abstract void addSection(Section section);
 
     public List<Action> getActions() {
         return actions;

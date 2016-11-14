@@ -26,6 +26,8 @@ public class TbModulo implements Serializable {
     int _id;
     String name;
     String script;
+    String data;
+    String action;
 
     public TbModulo() {
     }
@@ -52,6 +54,22 @@ public class TbModulo implements Serializable {
 
     public void setScript(String script) {
         this.script = script;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     @Override

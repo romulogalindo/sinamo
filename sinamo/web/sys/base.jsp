@@ -4,6 +4,7 @@
     Author     : romulogalindo
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -122,26 +123,43 @@
             .demo-card-wide.mdl-card {
                 width: 512px;
             }
-            
+
             .demo-card-wide > .mdl-card__title {
                 color: #fff;
-                /*height: 176px;*/
-                /*background: url('${pageContext.request.contextPath}/images/1200_070319-2657-PathToLight.jpg') center / cover;*/
                 background: #46B6AC;
-                /*url("../assets/demos/dog.png") no-repeat scroll right 15% bottom*/
             }
-            
+
             .demo-card-wide > .mdl-card__menu {
                 color: #fff;
             }
-            
+
             .sinamo-card--center{
                 text-align: center;
                 line-height: 16px;
             }
+
+            .sinamo-card--list--title{
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                margin: 0px 16px;
+                text-align: left;
+                line-height: 16px;
+            }
+
+            .mdl-list__item--two-line {
+                cursor: pointer;
+                transition-duration: .28s;
+                transition-timing-function: cubic-bezier(.4,0,.2,1);
+                transition-property: background-color;
+            }
+
+            .mdl-list__item--two-line:hover {
+                background-color: #eee;
+            }
         </style>
 
         <script src="${pageContext.request.contextPath}/js/material.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery3.1.1.js"></script>
+        <script src="${pageContext.request.contextPath}/js/sinamobasic.js"></script>
     </head>
     <body>
         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -152,8 +170,7 @@
             <jsp:include page="_base_dash.jsp"/>
 
             <!-- Contenido -->
-            <jsp:include page="_base_content.jsp"/>
-
+            <%@include file="_base_content.jsp" %>
         </div>
     </body>
 </html>

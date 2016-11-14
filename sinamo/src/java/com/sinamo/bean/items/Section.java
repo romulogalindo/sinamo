@@ -7,13 +7,9 @@ import java.util.List;
  *
  * @author romulogalindo
  */
-public class Section implements Serializable{
+public abstract class Section implements Serializable {
 
     String title;
-    List<Register> registers;
-
-    public Section() {
-    }
 
     public String getTitle() {
         return title;
@@ -23,12 +19,10 @@ public class Section implements Serializable{
         this.title = title;
     }
 
-    public List<Register> getRegisters() {
-        return registers;
-    }
+    public abstract List getRegisters();
 
-    public void setRegisters(List<Register> registers) {
-        this.registers = registers;
-    }
+    public abstract void setRegisters(List registers);
+    
+    public abstract void addRegister(Object register);
 
 }

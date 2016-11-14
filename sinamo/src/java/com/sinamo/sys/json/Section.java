@@ -11,6 +11,7 @@ public class Section implements Serializable {
 
     String title;
     List<Row> rows;
+    Item item;
 
     public Section() {
     }
@@ -29,6 +30,14 @@ public class Section implements Serializable {
 
     public void setRows(List<Row> rows) {
         this.rows = rows;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
 }
