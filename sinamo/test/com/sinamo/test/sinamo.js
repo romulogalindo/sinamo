@@ -8,45 +8,9 @@ function xx(_R) {
     return _R;
 }
 
-function goto(_R) {
-    if (_R.id == '_act1') {
-        var goTo = new ResponseGoTo();
-        goTo.addValue('r1', _R.GET('_id'));
-        goTo.setGoTo('5');
-        return goTo;
-    }
-}
-
-function sinamoRequestItem(fN) {
-    var map;
-    var funcName;
-
-    this.init = function () {
-        console.log('Iniciando sinamoRequestItem');
-        this.map = new Object();
-        this.funcName = fN;
-    };
-
-    this.add = function (k, v) {
-        this.map[k] = v;
-    };
-
-    this.GET = function (k) {
-        return this.map[k];
-    };
-
-    this.getFuncName = function () {
-        return this.funcName;
-    };
-
-    this.init();
-}
-
 function _goto(script) {
-    var sr = eval(script);
-    console.log('JSLOG: ' + sr);
-    console.log('JSLOG: ' + sr.getFuncName());
-    return eval(sr.getFuncName() + '(' + sr + ')');
+    var sr = JSON.parse(script);
+    return sr.funcName;
 }
 function _func5(_R) {
     var R1 = API.SQL("_native", "select * from system.tbusuari where _id=" + _R.getParameter('r1') + ";");
@@ -54,24 +18,26 @@ function _func5(_R) {
     _R.put('R1', R1);
     return _R;
 }
-function execute(_R) {}
+function _act5(_requestStringValue) {}
 function _func2(_R) {
     var R1 = API.SQL("_native", "select _id, nickname, (lastname || ' ' || name) as fullname, mail,'person'\\:\\:varchar as icon,'Admin'\\:\\:varchar as type from system.tbusuari;");
     var _R = new java.util.HashMap();
     _R.put('R1', R1);
     return _R;
 }
-function execute(_R) {
-    if (_R.id == '_act1') {
+function _act2(_requestStringValue) {
+    var _R = JSON.parse(_requestStringValue);
+    API.LOG('[JS] _R.xactName=' + _R.xactName);
+    if (_R.xactName == 'xact1') {
         var goTo = new ResponseGoTo();
-        goTo.addValue('r1', _R.GET('_id'));
+        goTo.addValue('r1', _R.map.r1);
         goTo.setGoTo('5');
         return goTo;
     }
 }
 function _func1(_R) {}
-function execute(_R) {}
+function _act1(_requestStringValue) {}
 function _func3(_R) {}
-function execute(_R) {}
+function _act3(_requestStringValue) {}
 function _func4(_R) {}
-function execute(_R) {}
+function _act4(_requestStringValue) {}

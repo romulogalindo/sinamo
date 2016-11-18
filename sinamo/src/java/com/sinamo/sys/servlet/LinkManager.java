@@ -1,5 +1,6 @@
 package com.sinamo.sys.servlet;
 
+import com.google.gson.Gson;
 import com.sinamo.bean.Module;
 import com.sinamo.bean.ModuleList;
 import com.sinamo.bean.items.ListItem;
@@ -116,15 +117,26 @@ public class LinkManager extends HttpServlet {
 
         System.out.println("request post recibido");
         String jsonOBject = request.getParameter("jsonOBject");
+        String funcName = null;
 
         Invocable invocable = (Invocable) SinamoFactory.getSimanoEngine().getScriptEngine();
         try {
-            String rpta = (String) invocable.invokeFunction("_goto", jsonOBject);
-            System.out.println("rpta = " + rpta);
+            funcName = (String) invocable.invokeFunction("_goto", jsonOBject);
+            System.out.println("rpta = " + funcName);
         } catch (Exception ep) {
             ep.printStackTrace();
         }
 
+        Object responseGoto = null;
+        try {
+            responseGoto = invocable.invokeFunction(funcName, jsonOBject);
+            System.out.println("rpta = " + responseGoto);
+            System.out.println("rpta = " + responseGoto.getClass());
+        } catch (Exception ep) {
+            ep.printStackTrace();
+        }
+
+        response.getOutputStream().print(new Gson().toJson(responseGoto));
         response.getOutputStream().close();
 
 //        Enumeration<String> enu = request.getParameterNames();

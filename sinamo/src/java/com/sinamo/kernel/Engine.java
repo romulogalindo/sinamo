@@ -86,13 +86,12 @@ public class Engine {
             module.setDataScript(funcBuildName);
 
             //Script de accion
-            String funcActionName = "execute";
-            nashronScript = nashronScript + " function " + funcActionName + "(_R){"
+            nashronScript = nashronScript + " function _act" + _module.getId() + "(_requestStringValue){"
                     + (_module.getAction() == null ? "" : _module.getAction())
                     + "}";
-            funcActionName = funcActionName + "(sJS.build(this,'_act" + _module.getId() + "'))";
+            
             for (Action action : module.getActions()) {
-                action.setDoit(funcActionName);
+                action.setDoit("execute(sJS.build(this,'" + action.getId() + "','_act" + _module.getId() + "'))");
             }
 
             System.out.println("_module.getId()==>" + _module.getId());
