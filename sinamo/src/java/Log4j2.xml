@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="logdir">${sys:catalina.base}/logs</Property>
+        <Property name="logfilename">sinamo</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <!--<PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n"/>-->
+            <PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m%n"/>
+        </Console>
+        <RollingFile name="RollingFile" fileName="${logdir}/${logfilename}.log" filePattern="${logdir}/${logfilename}-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout>
+                <pattern>[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n</pattern>
+            </PatternLayout>
+            <Policies> 
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1024 MB" />
+            </Policies>
+        </RollingFile>
+        <Failover name="Failover" primary="RollingFile">
+            <Failovers>
+                <AppenderRef ref="STDOUT"/>
+            </Failovers>
+        </Failover>
+        <File name="appender-error" fileName="${logdir}/${logfilename}-error.log" append="true">
+            <PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n" />
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="LOG1" level="all">
+            <!--<AppenderRef ref="STDOUT"/>-->
+        </Logger>
+        <!--<Logger name="LOG1" level="info"/>-->
+        <Root level="info">
+            <!--<Root level="all">-->
+            <AppenderRef ref="STDOUT"/>
+            <!--            <AppenderRef ref="Failover" level="ALL"/>
+            <AppenderRef ref="appender-error" level="ERROR" />-->
+        </Root>
+    </Loggers>
+</Configuration>

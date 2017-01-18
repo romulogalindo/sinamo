@@ -26,24 +26,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author romulogalindo
  */
-@WebServlet(name = "LinkManager", urlPatterns = {"/snm"})
+//@WebServlet(name = "LinkManager", urlPatterns = {"/snm"})
 public class LinkManager extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    public LinkManager() {
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

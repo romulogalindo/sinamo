@@ -1,8 +1,16 @@
 package com.sinamo.listener;
 
+import com.sinamo.kernel.Application;
+import com.sinamo.kernel.Sinamo;
+import com.sinamo.kernel.SinamoApplication;
 import com.sinamo.kernel.SinamoFactory;
+import com.sinamo.log.Log;
+import com.sinamo.util.ReaderXML;
+import java.io.File;
+import java.io.InputStream;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * Web application lifecycle listener.
@@ -10,13 +18,27 @@ import javax.servlet.ServletContextListener;
  * @author Romulo Galindo Tanta
  * @create Oct 21, 2016 3:32:22 AM
  */
+@WebListener(value = "SinamoStartUp")
 public class SinamoStartUp implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        /*primer paso*/
-        System.out.println("Iniciando Sinamo ver 1.0");
-        SinamoFactory.getSimanoEngine().build();
+        try {
+            Log.log("Iniciando Sinamo ver1.0");
+//            SinamoFactory.getSimanoEngine().build();
+
+            Application sinamoApplication = new SinamoApplication();
+            ReaderXML readerXml = new ReaderXML(new File(sce.getServletContext().getRealPath("/WEB-INF/cfg/SinamoApp.xml")), sce);
+            sinamoApplication.config(readerXml.getApplicationXMLunit());
+
+            //poner la app en la pila
+            Sinamo.putApplication(sinamoApplication);
+
+            //Iniciar la aplicacion
+            sinamoApplication.run();
+        } catch (Exception ep) {
+            Log.error(ep, ep);
+        }
     }
 
     @Override

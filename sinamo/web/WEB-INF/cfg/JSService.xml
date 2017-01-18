@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<js-service>
+    <scripts>
+        <script url="/WEB-INF/sysjs/nashron.js"/>
+        <script url="/WEB-INF/sysjs/util.js"/>
+    </scripts>
+    <classes>
+        <class url="com.sinamo.util.DBUnitUtil" accessname="DBUTIL" />
+        <class url="com.sinamo.util.ReaderXML" accessname="READERXML" />
+        <class url="com.sinamo.kernel.JavaScriptService" accessname="CACHE" />
+    </classes>
+</js-service>

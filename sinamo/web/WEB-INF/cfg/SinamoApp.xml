@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+    <name>Sinamo</name>
+    <services>
+        <service type="data" file="/WEB-INF/cfg/DataService.xml"/>
+        <service type="js" file="/WEB-INF/cfg/JSService.xml"/>
+        <service type="cache" file="/WEB-INF/cfg/CacheService.xml"/>
+        <service type="http" file="/WEB-INF/cfg/HttpService.xml"/>
+    </services>
+</app>
