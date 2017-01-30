@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class Sinamo implements Serializable {
 
-    private static Application application;
+//    private static Application application;
     //Lista de aplicaciones corriendo;
     private static Map<String, Application> applications = new HashMap<>();
 

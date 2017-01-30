@@ -4,6 +4,8 @@
     Author     : romulogalindo
 --%>
 
+<%@page import="com.sinamo.kernel.SinamoApplication"%>
+<%@page import="com.sinamo.kernel.Sinamo"%>
 <%@page import="com.sinamo.bean.items.ModuleItem"%>
 <%@page import="com.sinamo.bean.items.MenuItem"%>
 <%@page import="java.util.List"%>
@@ -30,7 +32,8 @@
 
     <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
         <%
-            for (MenuItem menuitem : SinamoFactory.getSimanoEngine().getSysmenu()) {
+            for (MenuItem menuitem : ((SinamoApplication) Sinamo.getApplication("Sinamo")).getSysmenu()) {
+                System.out.println("menuitem = " + menuitem);
         %>
         <a class="mdl-navigation__link" href="">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>

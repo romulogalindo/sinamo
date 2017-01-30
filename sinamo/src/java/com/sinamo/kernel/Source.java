@@ -6,7 +6,9 @@ package com.sinamo.kernel;
  */
 public abstract class Source {
 
-    public abstract void connect();
+    public abstract String getSourceName();
+
+    public abstract boolean connect();
 
     public abstract void disconnect();
 }

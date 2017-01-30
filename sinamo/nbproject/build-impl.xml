@@ -1000,6 +1000,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.Hibernate-5.2.6.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.postgresql-9.4.1211.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.gson-2.6.2.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.json-simple-1.1.1.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.jstl.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.log4j2-2.7.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.ehcache-3.2.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
@@ -1011,6 +1012,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.Hibernate-5.2.6.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.postgresql-9.4.1211.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.gson-2.6.2.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${libs.json-simple-1.1.1.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.jstl.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.log4j2-2.7.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.ehcache-3.2.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>

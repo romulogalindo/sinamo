@@ -11,12 +11,21 @@ import java.util.List;
 public abstract class Module {
 
     long pid;
+    Integer id;
     String title;
     String type;
     String dataScript;
     List<Action> actions;
 
     public Module() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public long getPid() {

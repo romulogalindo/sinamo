@@ -205,7 +205,7 @@ public class SinamoFactory {
             MenuItem menuitem = menuitems.get(vwmenumodulo.getMenu_name());
             if (menuitem == null) {
                 menuitem = new MenuItem();
-                menuitem.setId("" + vwmenumodulo.getId());
+                menuitem.setId(vwmenumodulo.getId());
                 menuitem.setTitle(vwmenumodulo.getMenu_title());
                 menuitems.put(vwmenumodulo.getMenu_name(), menuitem);
             }

@@ -2,6 +2,7 @@ package com.sinamo.units;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.servlet.ServletContextEvent;
 
 /**
  * @author Romulo Galindo Tanta
@@ -11,6 +12,9 @@ public class JavaScriptServiceXMLUnit implements Serializable {
 
     List<ScriptXMLUnit> scripts;
     List<ClassXMLUnit> classes;
+
+    //Object no transaccionales
+    ServletContextEvent sce;
 
     public JavaScriptServiceXMLUnit() {
     }
@@ -29,6 +33,14 @@ public class JavaScriptServiceXMLUnit implements Serializable {
 
     public void setClasses(List<ClassXMLUnit> classes) {
         this.classes = classes;
+    }
+
+    public ServletContextEvent getSce() {
+        return sce;
+    }
+
+    public void setSce(ServletContextEvent sce) {
+        this.sce = sce;
     }
 
 }

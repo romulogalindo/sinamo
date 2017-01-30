@@ -24,14 +24,16 @@ public class SinamoStartUp implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
-            Log.log("Iniciando Sinamo ver1.0");
-//            SinamoFactory.getSimanoEngine().build();
+            Log.log("== Iniciando SINAMO v1.0");
 
+            //Crea una aplicacion en blanco
             Application sinamoApplication = new SinamoApplication();
+
+            //!-- Mejorar esta parte -> solo debe haber una unica llamada a ReaderXML.
             ReaderXML readerXml = new ReaderXML(new File(sce.getServletContext().getRealPath("/WEB-INF/cfg/SinamoApp.xml")), sce);
             sinamoApplication.config(readerXml.getApplicationXMLunit());
 
-            //poner la app en la pila
+            //Se pone la app en la pila statica de aplicaciones
             Sinamo.putApplication(sinamoApplication);
 
             //Iniciar la aplicacion
@@ -43,6 +45,6 @@ public class SinamoStartUp implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("Fin!!");
+        Log.log("== Finalizando Sinamo");
     }
 }

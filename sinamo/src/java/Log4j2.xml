@@ -7,7 +7,7 @@
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <!--<PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n"/>-->
-            <PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m%n"/>
+            <PatternLayout pattern="%highlight{[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m%n%throwable}"/>
         </Console>
         <RollingFile name="RollingFile" fileName="${logdir}/${logfilename}.log" filePattern="${logdir}/${logfilename}-%d{yyyy-MM-dd}-%i.log" >
             <PatternLayout>
@@ -24,7 +24,7 @@
             </Failovers>
         </Failover>
         <File name="appender-error" fileName="${logdir}/${logfilename}-error.log" append="true">
-            <PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n" />
+            <PatternLayout pattern="%highlight{[%d{dd-MM-yyyy HH:mm:ss}][%-5level] %m %n %n%throwable}" />
         </File>
     </Appenders>
     <Loggers>

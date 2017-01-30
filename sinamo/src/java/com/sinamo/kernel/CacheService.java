@@ -1,6 +1,9 @@
 package com.sinamo.kernel;
 
+import com.sinamo.mods.Module;
+import com.sinamo.bean.items.MenuItem;
 import com.sinamo.log.Log;
+import com.sinamo.transa.Transaction;
 import com.sinamo.units.CacheServiceXMLUnit;
 import com.sinamo.units.SpaceXMLUnit;
 import com.sinamo.util.ReaderXML;
@@ -27,15 +30,19 @@ public class CacheService extends Service {
     //DA to caches
     Map<String, Object> caches;
 
+    //Log-static !--cambiar
+    String _log = "[" + getClass().getSimpleName() + "]";
+
     @Override
     public void putConfiguration(Object config) {
         //Seteamos la configuracion desde el archivo de configuracion
         configuratorXml = (CacheServiceXMLUnit) config;
-        Log.debug("Config xml = " + configuratorXml);
+        Log.debug(_log + " XML > " + configuratorXml);
     }
 
     @Override
     public void start() {
+        Log.debug(_log + "##############################");
         //Inicializacion!!
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build();
         cacheManager.init();
@@ -46,13 +53,30 @@ public class CacheService extends Service {
             Object myCache = cacheManager.createCache(spaceXml.getName(),
                     CacheConfigurationBuilder.newCacheConfigurationBuilder(getClass(spaceXml.getKey()), getClass(spaceXml.getValue()), ResourcePoolsBuilder.heap(Long.MAX_VALUE)).build());
             caches.put(spaceXml.getName(), myCache);
-            Log.log("myCache = " + myCache);
+            Log.log(_log + " Cache creada > nombre= " + spaceXml.getName() + ", key=" + spaceXml.getKey() + ", value=" + spaceXml.getValue());
         }
 
-        ((Cache) caches.get("transaction")).put(1L, new String("Hell!!"));
-        ((Cache) caches.get("transaction")).put(2L, new String("Hell!!"));
+        //Cache para los menus
+        Object cache_menulist = cacheManager.createCache(CACHE_MENUNAME,
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(Integer.class, MenuItem.class, ResourcePoolsBuilder.heap(Long.MAX_VALUE)).build());
+        caches.put(CACHE_MENUNAME, cache_menulist);
+        Log.log(_log + " Cache creada > nombre=" + CACHE_MENUNAME + ", key=Integer, value=MenuItem");
 
-        Log.log("exis=" + ((Cache) caches.get("transaction")).get(1L));
+        //Cache para los modulos
+        Object cache_modulelist = cacheManager.createCache(CACHE_MODULONAME,
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(Integer.class, Module.class, ResourcePoolsBuilder.heap(Long.MAX_VALUE)).build());
+        caches.put(CACHE_MODULONAME, cache_modulelist);
+        Log.log(_log + " Cache creada > nombre=" + CACHE_MODULONAME + ", key=Integer, value=Module");
+
+        //Cache para las transacciones
+        Object cache_transa = cacheManager.createCache(CACHE_TRANSANAME,
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Transaction.class, ResourcePoolsBuilder.heap(Long.MAX_VALUE)).build());
+        caches.put(CACHE_TRANSANAME, cache_transa);
+        Log.log(_log + " Cache creada > nombre=" + CACHE_TRANSANAME + ", key=Integer, value=Module");
+
+//        ((Cache) caches.get("transaction")).put(1L, new String("Hell!!"));
+//        ((Cache) caches.get("transaction")).put(2L, new String("Hell!!"));
+//        Log.log("exis=" + ((Cache) caches.get("transaction")).get(1L));
     }
 
     @Override
@@ -108,4 +132,8 @@ public class CacheService extends Service {
         cs.start();
         return cs;
     }
+
+    public static final String CACHE_MENUNAME = "@lsmenu";
+    public static final String CACHE_MODULONAME = "@lsmodule";
+    public static final String CACHE_TRANSANAME = "@transa";
 }

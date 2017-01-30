@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data-service>
     <syssource>
-        <source type="DBSQL" server="sinamo.cvoufx0x2emv.us-west-2.rds.amazonaws.com" port="1988" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql" />
+        <!--<source type="DBSQL" server="sinamo.cvoufx0x2emv.us-west-2.rds.amazonaws.com" port="1988" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql" />-->
+        <source type="DBSQL" server="127.0.0.1" port="5432" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql"/>
     </syssource>
     <sources>
         <source type="DBSQL" server="190.40.141.107" port="1988" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql"/>

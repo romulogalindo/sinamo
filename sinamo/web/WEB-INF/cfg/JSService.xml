@@ -5,6 +5,8 @@
         <script url="/WEB-INF/sysjs/util.js"/>
     </scripts>
     <classes>
+        <class url="com.sinamo.kernel.SinamoFactory" accessname="API" />
+        <class url="com.sinamo.bean.items.ResponseGoTo" accessname="ResponseGoTo" />
         <class url="com.sinamo.util.DBUnitUtil" accessname="DBUTIL" />
         <class url="com.sinamo.util.ReaderXML" accessname="READERXML" />
         <class url="com.sinamo.kernel.JavaScriptService" accessname="CACHE" />

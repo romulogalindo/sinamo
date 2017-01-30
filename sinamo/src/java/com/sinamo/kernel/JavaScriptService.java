@@ -10,6 +10,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.ServletContextEvent;
 
 /**
  * @author Romulo Galindo Tanta
@@ -20,71 +21,45 @@ public class JavaScriptService extends Service {
     //Configurador
     JavaScriptServiceXMLUnit configuratorXml;
 
+    //Obligatorio recibir el objeto sce
+    ServletContextEvent sce;
+
     //Engine JS Nashron
     ScriptEngine scriptEngine;
 
-    static CacheService cacheservice;
+    //Puntero de invocacion de funciones
+    Invocable invocable;
 
-    //extra
-    static {
-        cacheservice = CacheService.getCache();
+    //Scripts
+    String scriptFromFiles = "";
+    String scriptFromClasses = "";
+    String scriptFromDBs = "";
+
+    public Object executeFunction(String functionName, Object... args) throws Exception {
+        return invocable != null ? invocable.invokeFunction(functionName, args) : null;
     }
 
     @Override
     public void putConfiguration(Object config) {
         //Seteamos la configuracion desde el archivo de configuracion
         configuratorXml = (JavaScriptServiceXMLUnit) config;
-        Log.debug("Config xml = " + configuratorXml);
+        this.sce = configuratorXml.getSce();
+        Log.debug(_log + " XML > " + configuratorXml);
     }
 
     @Override
     public void start() {
-        Log.info("[JS-Service] Levantando nashron engine");
+        Log.debug(_log + "##############################");
         scriptEngine = new ScriptEngineManager().getEngineByName("nashorn");
 
         try {
-            Log.info("[JS-Service] Cargando ja-files");
+            Log.info(_log + " Procesando js-files");
             scriptEngine.eval(readerAllScript());
         } catch (ScriptException ep) {
             Log.error(ep, ep);
         }
 
-        Invocable invocable = (Invocable) scriptEngine;
-        Object result = new Object();
-        try {
-//            result = invocable.invokeFunction("getXmlUnit", "postgresql");
-            result = invocable.invokeFunction("getValuefromCache", "transaction", 1L);
-        } catch (Exception ep) {
-            Log.error(ep, ep);
-        }
-
-        Log.log("result = " + result);
-        Log.log("?->" + result != null ? result.getClass() : "null!");
-    }
-
-    public String readerAllScript() {
-        String nashronScript = "";
-        for (ScriptXMLUnit xml : configuratorXml.getScripts()) {
-            try {
-//                Log.debug("url = " + scriptXmlUnit.getUrl());
-//                Log.debug("url = " + this.getClass().getResource(scriptXmlUnit.getUrl()));
-//                nashronScript += SinamoFactory.readFile(new File(this.getClass().getResource(scriptXmlUnit.getUrl()).toURI()));
-                nashronScript += SinamoFactory.readFile(new File("/home/romulogalindo/NetBeansProjects/sinamo/sinamo/web" + xml.getUrl())) + "\n";
-            } catch (Exception ep) {
-                Log.error(ep, ep);
-            }
-        }
-
-        for (ClassXMLUnit xml : configuratorXml.getClasses()) {
-            try {
-                nashronScript += "var " + xml.getAccessName() + " = Java.type('" + xml.getUrl() + "');\n";
-            } catch (Exception ep) {
-                Log.error(ep, ep);
-            }
-        }
-
-        Log.debug("[readerAllScript]" + nashronScript);
-        return nashronScript;
+        invocable = (Invocable) scriptEngine;
     }
 
     @Override
@@ -93,16 +68,75 @@ public class JavaScriptService extends Service {
         Log.info("[JS-Service] Destruido!");
     }
 
-    public static void main(String[] args) {
-        JavaScriptService js = new JavaScriptService();
-        JavaScriptServiceXMLUnit dsxml = new ReaderXML("/home/romulogalindo/NetBeansProjects/sinamo/sinamo/web/WEB-INF/cfg/JSService.xml").getJavaScriptServiceXMLUnit();
-        js.putConfiguration(dsxml);
-        js.start();
-        js.stop();
+    public void restart() {
+        try {
+            Log.info(_log + " re-Procesando js-files");
+            scriptEngine.eval(readerAllScript());
+        } catch (ScriptException ep) {
+            Log.error(ep, ep);
+        }
+
+        invocable = (Invocable) scriptEngine;
     }
 
-    public static Object get(String cacheName, Object key) {
-        return cacheservice.getCache(cacheName).get(key);
+    public String readerAllScript() {
+
+        for (ScriptXMLUnit xml : configuratorXml.getScripts()) {
+            try {
+                File jsFile = new File(sce.getServletContext().getRealPath(xml.getUrl()));
+                Log.log(_log + " @file = " + jsFile.getAbsolutePath());
+                scriptFromFiles += SinamoFactory.readFile(jsFile) + "\n";
+            } catch (Exception ep) {
+                Log.error(ep, ep);
+            }
+        }
+
+        for (ClassXMLUnit xml : configuratorXml.getClasses()) {
+            try {
+                scriptFromClasses += "var " + xml.getAccessName() + " = Java.type('" + xml.getUrl() + "');\n";
+                Log.log(_log + " @var " + xml.getAccessName() + " = Java.type('" + xml.getUrl() + "');");
+            } catch (Exception ep) {
+                Log.error(ep, ep);
+            }
+        }
+
+//        Log.log(_log + " Script>>>\n" + scriptFormFile);
+        return scriptFromFiles + "\n"
+                + scriptFromClasses + "\n"
+                + scriptFromDBs;
     }
 
+    public String getScriptFromFiles() {
+        return scriptFromFiles;
+    }
+
+    public void setScriptFromFiles(String scriptFromFiles) {
+        this.scriptFromFiles = scriptFromFiles;
+    }
+
+    public String getScriptFromClasses() {
+        return scriptFromClasses;
+    }
+
+    public void setScriptFromClasses(String scriptFromClasses) {
+        this.scriptFromClasses = scriptFromClasses;
+    }
+
+    public String getScriptFromDBs() {
+        return scriptFromDBs;
+    }
+
+    public void setScriptFromDBs(String scriptFromDBs) {
+        this.scriptFromDBs = scriptFromDBs;
+    }
+
+//    public static void main(String[] args) {
+//        JavaScriptService js = new JavaScriptService();
+//        JavaScriptServiceXMLUnit dsxml = new ReaderXML("/home/romulogalindo/NetBeansProjects/sinamo/sinamo/web/WEB-INF/cfg/JSService.xml").getJavaScriptServiceXMLUnit();
+//        js.putConfiguration(dsxml);
+//        js.start();
+//        js.stop();
+//    }
+    //Log-static !--cambiar
+    String _log = "[" + getClass().getSimpleName() + "]";
 }

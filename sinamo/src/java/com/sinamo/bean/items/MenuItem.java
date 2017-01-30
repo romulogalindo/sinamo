@@ -10,19 +10,19 @@ import java.util.List;
  */
 public class MenuItem implements Serializable {
 
-    public String id;
-    public String title;
-    public List<ModuleItem> moduleitems;
+    Integer id;
+    String title;
+    List<ModuleItem> moduleitems;
 
     public MenuItem() {
         moduleitems = new ArrayList<>();
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,6 +44,11 @@ public class MenuItem implements Serializable {
 
     public void addModuleItem(ModuleItem moduleitem) {
         this.moduleitems.add(moduleitem);
+    }
+
+    @Override
+    public String toString() {
+        return "MenuItem{" + "id=" + id + ", title=" + title + ", moduleitems=" + moduleitems + '}';
     }
 
 }

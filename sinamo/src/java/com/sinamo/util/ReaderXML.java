@@ -125,6 +125,7 @@ public class ReaderXML {
                 sourceList.add(getClassfromNode(sources.item(i)));
             }
             dsxml.setClasses(sourceList);
+            dsxml.setSce(sce);
         } catch (Exception ep) {
             Log.error(ep, ep);
         }
@@ -147,6 +148,7 @@ public class ReaderXML {
                 spaceList.add(getSpacefromNode(scripts.item(i)));
             }
             dsxml.setSpaces(spaceList);
+//            dsxml.setSce(sce);
         } catch (Exception ep) {
             Log.error(ep, ep);
         }
@@ -270,6 +272,11 @@ public class ReaderXML {
         xml.setClassName(attr.getNamedItem("class") != null ? attr.getNamedItem("class").getNodeValue() : "");
         xml.setPatterns(attr.getNamedItem("value") != null ? Arrays.asList(attr.getNamedItem("value").getNodeValue().split(",")) : new ArrayList<>());
         return xml;
+    }
+
+    @Override
+    public String toString() {
+        return "file=" + (file != null ? file.getAbsolutePath() : "");
     }
 
     public static void main(String[] args) {

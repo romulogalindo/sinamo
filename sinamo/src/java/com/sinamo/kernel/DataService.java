@@ -14,37 +14,39 @@ import java.util.Map;
 public class DataService extends Service {
 
     //Configurador
-    DataServiceXMLUnit configuratorXml;
+    private DataServiceXMLUnit configuratorXml;
 
     //Controlador raiz db
-    DataBaseSource sysDataBaseSource;
-    Map<String, DataBaseSource> dataBaseSources;
+    private DataBaseSource sysDataBaseSource;
+    private Map<String, DataBaseSource> dataBaseSources;
 
     @Override
     public void putConfiguration(Object config) {
         //Seteamos la configuracion desde el archivo de configuracion
         configuratorXml = (DataServiceXMLUnit) config;
-        Log.debug("Config xml = " + configuratorXml);
+        Log.debug(_log + " XML > " + configuratorXml);
     }
 
     @Override
     public void start() {
         //Conseguir el elemento principal sysdatasoruce
+        Log.debug(_log + "##############################");
         sysDataBaseSource = new DataBaseSource(configuratorXml.getSyssource().get(0));
-        Log.debug("[start] sysDataBaseSource = " + sysDataBaseSource);
+        Log.debug(_log + " DBSys = " + sysDataBaseSource.getSourceName());
+
         //Luego de crearla conectarse!
         sysDataBaseSource.connect();
-        Log.debug("[start] sysDataBaseSource.connect()");
+        Log.debug(_log + " " + sysDataBaseSource.getSourceName() + " Conectada!");
 
         //Configurar la lista de bases de datos
         dataBaseSources = new HashMap<>();
         for (SourceXMLUnit sourceXmlUnit : configuratorXml.getSources()) {
             DataBaseSource dataBaseSource = new DataBaseSource(sourceXmlUnit);
             dataBaseSources.put(sourceXmlUnit.getServer() + "_" + sourceXmlUnit.getDbname(), dataBaseSource);
-            Log.debug("[start] dataBaseSource = " + dataBaseSource);
+
             //Luego de crearla conectarse!
-            dataBaseSource.connect();
-            Log.debug("[start] dataBaseSource.connect()");
+            boolean dbConnected = dataBaseSource.connect();
+            Log.debug(_log + " status =" + (dbConnected ? "Conected" : "Disconect"));
         }
     }
 
@@ -61,13 +63,14 @@ public class DataService extends Service {
         }
     }
 
-    public static void main(String[] args) {
-        DataService dataService = new DataService();
-//        ReaderXML rxml = new ReaderXML("/home/romulogalindo/NetBeansProjects/sinamo/sinamo/web/WEB-INF/cfg/DataService.xml");
-        DataServiceXMLUnit dsxml = new ReaderXML("/home/romulogalindo/NetBeansProjects/sinamo/sinamo/web/WEB-INF/cfg/DataService.xml").getDataServiceXMLUnit();
-        dataService.putConfiguration(dsxml);
-        dataService.start();
-        dataService.stop();
+    public DataBaseSource getSysDataBaseSource() {
+        return sysDataBaseSource;
     }
 
+    public Map<String, DataBaseSource> getDataBaseSources() {
+        return dataBaseSources;
+    }
+
+    //Log-static !--cambiar
+    String _log = "[" + getClass().getSimpleName() + "]";
 }

@@ -17,21 +17,29 @@ import org.hibernate.service.ServiceRegistry;
  * @author Romulo Galindo Tanta
  * @create Jan 11, 2017 10:49:34 AM
  */
-public class DataBaseSource extends Source implements Data {
+public class DataBaseSource extends Source implements DataBase {
 
     private SourceXMLUnit sourceXmlUnit;
     private SessionFactory sessionFactory;
 
     public DataBaseSource(SourceXMLUnit sourceXmlUnit) {
         this.sourceXmlUnit = sourceXmlUnit;
+        
+        //!--Mejorar!!
+        _log = "[" + getClass().getSimpleName() + ":" + sourceXmlUnit.getDbname() + "@" + sourceXmlUnit.getServer() + "]";
     }
 
     @Override
-    public void connect() {
+    public String getSourceName() {
+        return sourceXmlUnit.getDbname() + "@" + sourceXmlUnit.getServer();
+    }
+
+    @Override
+    public boolean connect() {
         //Se conecta a la DB!sample todo con hibernate
-        Log.debug("[connect] <- " + this.sourceXmlUnit.getEngine());
+        Log.debug(_log + " @type = " + this.sourceXmlUnit.getEngine());
         SinamoDriverDBUnit sinamoDriverDbUnit = DBUnitUtil.getSinamoDriverDbUnit(sourceXmlUnit.getEngine());
-        Log.debug("[connect]sinamoDriverDbUnit = " + sinamoDriverDbUnit);
+        Log.debug(_log + " @info = " + sinamoDriverDbUnit);
         Configuration config = new Configuration();
 
         config.setProperty("hibernate.dialect", sinamoDriverDbUnit.getDialect());
@@ -70,7 +78,7 @@ public class DataBaseSource extends Source implements Data {
 
         sessionFactory = config.buildSessionFactory(registry);
 
-        //Testing
+        //Testing !-- cambiar el como se testea
         StatelessSession statelessSession = sessionFactory.openStatelessSession();
         NativeQuery nativeQuery = statelessSession.createNativeQuery("select 1;");
 
@@ -78,10 +86,11 @@ public class DataBaseSource extends Source implements Data {
         statelessSession.close();
 
         for (Object rw : queryReturn) {
-            System.out.println("r =" + rw);
+            System.out.println("r = " + rw);
         }
-        Log.log("queryReturn=" + queryReturn);
+//        Log.log("queryReturn=" + queryReturn.get(0));
 
+        return (queryReturn.get(0) + "").contentEquals("1");
     }
 
     @Override
@@ -94,5 +103,13 @@ public class DataBaseSource extends Source implements Data {
             Log.error(ep, ep);
         }
     }
+
+    @Override
+    public StatelessSession getSession() {
+        return sessionFactory.openStatelessSession();
+    }
+
+    //Log-static !--cambiar
+    String _log = "";
 
 }
