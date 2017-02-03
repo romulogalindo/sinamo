@@ -60,3 +60,13 @@ function execute(_jsonObject) {
     });
 }
 
+/*
+ * 
+ * @type sinamo
+ */
+function Sinamo() {
+    this.goto = function (url) {
+        window.location.href = url;
+    };
+}
+var snm = new Sinamo();

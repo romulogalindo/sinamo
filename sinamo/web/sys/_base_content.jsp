@@ -11,8 +11,8 @@
         <c:when test="${_module.content.type eq 'list'}">
             <%@include file="_base_content_list.jsp" %>
         </c:when>
-        <c:when test="${_module.content.type eq 'form'}">
-            <%@include file="_base_content_form.jsp" %>
+        <c:when test="${_module.content.type eq 'sectionform'}">
+            <%@include file="_base_content_sectionform.jsp" %>
         </c:when>
         <c:when test="${_module.content.type eq 'table'}">
             <%@include file="_base_content_table.jsp" %>

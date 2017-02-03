@@ -163,7 +163,7 @@
 
         <script src="${pageContext.request.contextPath}/js/material.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery3.1.1.js"></script>
-        <script src="${pageContext.request.contextPath}/js/sinamobasic.js"></script>
+        <script src="${pageContext.request.contextPath}/js/sinamobasic.js?a=1"></script>
     </head>
     <body>
         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">

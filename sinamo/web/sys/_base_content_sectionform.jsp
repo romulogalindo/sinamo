@@ -20,10 +20,10 @@
         <div class="demo-card-wide mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">
-                    ${_module.title}
+                    ${_module.head.title}
                 </h2>
             </div>
-            <c:forEach var="section" items="${_module.sections}">
+            <c:forEach var="section" items="${_module.content.form.sections}">
                 <div class="mdl-card__supporting-text">
                     <h4 class="mdl-card__subtitle-text sinamo-card--center">
                         ${section.title}
@@ -38,18 +38,25 @@
             </c:forEach>
 
             <div class="mdl-card__actions mdl-card--border">
-                <c:forEach var="action" items="${module.actions}">
-                    <button id="${action.id}" onclick="${action.doit}" class="mdl-button mdl-js-button mdl-js-ripple-effect">
-                        ${action.title}
-                    </button>
+                <c:forEach var="action" items="${_module.actions}">
+                    <c:if test="${action.value.type == 'linkbutton'}">
+                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            ${action.value.title}
+                        </button>
+                    </c:if>
+                    <c:if test="${action.value.type == 'button' }">
+                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            ${action.value.title}
+                        </button>
+                    </c:if>
                 </c:forEach>
             </div>
 
-            <!--            <div class="mdl-card__menu">
-                            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                                <i class="material-icons">share</i>
-                            </button>
-                        </div>-->
+            <!--                        <div class="mdl-card__menu">
+                                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">share</i>
+                                        </button>
+                                    </div>-->
         </div>
     </div>
 </main>

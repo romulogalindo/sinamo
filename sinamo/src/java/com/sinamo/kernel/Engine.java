@@ -8,8 +8,11 @@ import com.sinamo.dto.TbModulo;
 import com.sinamo.dto.VwMenuModulo;
 import com.sinamo.mods.ButtonAction;
 import com.sinamo.mods.DefaultList;
+import com.sinamo.mods.DefaultSection;
 import com.sinamo.mods.DynamicListForm;
 import com.sinamo.mods.LinkAction;
+import com.sinamo.mods.Register;
+import com.sinamo.mods.SectionForm;
 import com.sinamo.sys.db.Native;
 import com.sinamo.sys.db.SysDBConector;
 import com.sinamo.sys.json.Script;
@@ -176,6 +179,13 @@ public class Engine {
                         _btnact.setTitle(_act.get("title").toString());
                         _btnact.setUrl(_act.get("url").toString());
                         _actions.put(_btnact.getId(), _btnact);
+                    } else if (_act.get("type").toString().contentEquals("linkbutton")) {
+                        com.sinamo.mods.LinkAction _btnact = new LinkAction();
+                        _btnact.setId(Integer.parseInt(_act.get("id").toString()));
+                        _btnact.setType(_act.get("type").toString());
+                        _btnact.setTitle(_act.get("title").toString());
+                        _btnact.setUrl(_act.get("url").toString());
+                        _actions.put(_btnact.getId(), _btnact);
                     }
                 }
                 _mod.setActions(_actions);
@@ -186,7 +196,7 @@ public class Engine {
                 _content.setState(((JSONObject) json.get("content")).get("state").toString());
 
                 if (_content.getType().contentEquals("list") & _content.getState().contentEquals("dynamic")) {
-                    DynamicListForm dynalist = new DynamicListForm();
+                    DynamicListForm dynalistForm = new DynamicListForm();
 
                     JSONObject _list = (JSONObject) ((JSONObject) ((JSONObject) json.get("content")).get("form")).get("list");
 
@@ -198,9 +208,29 @@ public class Engine {
                     defautList.setValue(_list.get("value").toString());
                     defautList.setActionId(Integer.parseInt(_list.get("actionId").toString()));
 
-                    dynalist.setBaseList(defautList);
+                    dynalistForm.setBaseList(defautList);
 
-                    _content.setForm(dynalist);
+                    _content.setForm(dynalistForm);
+                } else if (_content.getType().contentEquals("sectionform")) {
+                    SectionForm sectionForm = new SectionForm();
+                    Iterator _sections = ((JSONArray) ((JSONObject) ((JSONObject) json.get("content")).get("form")).get("sections")).iterator();
+                    while (_sections.hasNext()) {
+                        DefaultSection defaultSection = new DefaultSection();
+                        JSONObject _section = (JSONObject) _sections.next();
+                        defaultSection.setTitle(_section.get("title").toString());
+                        Iterator _registers = ((JSONArray) _section.get("registers")).iterator();
+                        while (_registers.hasNext()) {
+                            JSONObject _register = (JSONObject) _registers.next();
+                            Register register = new Register();
+                            register.setTitle(_register.get("title").toString());
+                            register.setType(_register.get("type").toString());
+                            register.setValue(_register.get("value").toString());
+                            defaultSection.addRegister(register);
+                        }
+
+                        sectionForm.addSection(defaultSection);
+                    }
+                    _content.setForm(sectionForm);
                 }
                 _mod.setContent(_content);
 
@@ -210,8 +240,9 @@ public class Engine {
 //            module.setId(_module.getId());
                 //Script de creacion
                 String dataScriptName = "_func" + _module.getId();
-                nashronScript = nashronScript + " function " + dataScriptName + "(request){\n"
+                nashronScript = nashronScript + " function " + dataScriptName + "(_requestStringValue){\n"
                         + "var responsedatamap = new java.util.HashMap();"
+                        + "var request = JSON.parse(_requestStringValue);"
                         + (_module.getData() == null ? "" : _module.getData())
                         + "return responsedatamap;"
                         + "}";
@@ -285,7 +316,7 @@ public class Engine {
 //        ((JSONObject) json.get("head")).get("title");
 //        System.out.println("json = " + ((JSONObject) json.get("head")).get("title").toString());
         String h = "snm?ra=2&p1=${value}";
-        h= h.replaceAll(Pattern.quote("${value}"), "juan");
+        h = h.replaceAll(Pattern.quote("${value}"), "juan");
         System.out.println("h = " + h);
     }
 }

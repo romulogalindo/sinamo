@@ -36,7 +36,7 @@
                                     </h4>-->
                 <ul class="demo-list-two mdl-list">
                     <c:forEach var="item" items="${_module.content.form.list}" varStatus="ix">
-                        <li id="${_transa.transactionId}_${ix.count}" class="mdl-list__item mdl-list__item--two-line" onclick="${item.action}">
+                        <li id="${_transa.transactionId}_${ix.count}" class="mdl-list__item mdl-list__item--two-line" onclick="snm.goto('${item.action}')">
                             <input type="hidden" id="${_transa.transactionId}_${ix.count}_v" name="${_transa.transactionId}_${ix.count}_v" value="${item.value}" />
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-avatar">${tiem.icon}</i>

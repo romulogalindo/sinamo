@@ -2,9 +2,6 @@ package com.sinamo.sys.servlet;
 
 import com.google.gson.Gson;
 import com.sinamo.mods.Module;
-import com.sinamo.bean.ModuleList;
-import com.sinamo.bean.items.ListItem;
-import com.sinamo.bean.items.SectionList;
 import com.sinamo.kernel.Application;
 import com.sinamo.kernel.SinamoApplication;
 import com.sinamo.kernel.SinamoFactory;
@@ -12,7 +9,6 @@ import com.sinamo.log.Log;
 import com.sinamo.transa.SimpleTransaction;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import javax.script.Invocable;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

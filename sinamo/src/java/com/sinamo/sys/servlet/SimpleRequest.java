@@ -1,5 +1,6 @@
 package com.sinamo.sys.servlet;
 
+import com.sinamo.log.Log;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
@@ -27,8 +28,6 @@ public class SimpleRequest {
     }
 
     public String getJsonRequest() {
-        String jsonRequest = "";
-
         JSONObject obj = new JSONObject();
         JSONArray params = new JSONArray();
         Enumeration<String> enu = request.getParameterNames();
@@ -40,7 +39,7 @@ public class SimpleRequest {
             params.add(obj2);
         }
         obj.put("params", params);
-
+        Log.log("->" + params.toJSONString());
         return obj.toJSONString();
     }
 

@@ -80,7 +80,9 @@ public class JavaScriptService extends Service {
     }
 
     public String readerAllScript() {
-
+        scriptFromFiles = "";
+        scriptFromClasses = "";
+        
         for (ScriptXMLUnit xml : configuratorXml.getScripts()) {
             try {
                 File jsFile = new File(sce.getServletContext().getRealPath(xml.getUrl()));
@@ -100,7 +102,9 @@ public class JavaScriptService extends Service {
             }
         }
 
-//        Log.log(_log + " Script>>>\n" + scriptFormFile);
+        Log.log(_log + " Script>>>\n" + scriptFromFiles + "\n"
+                + scriptFromClasses + "\n"
+                + scriptFromDBs);
         return scriptFromFiles + "\n"
                 + scriptFromClasses + "\n"
                 + scriptFromDBs;

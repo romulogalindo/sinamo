@@ -24,3 +24,13 @@ function getXmlUnit(serviceName) {
 function getValuefromCache(cacheName, key) {
     return CACHE.get(cacheName, key);
 }
+
+function getValuefromRequest(request, key) {
+    var returnValue = null;
+    request.params.forEach(function (value, index, array) {
+        if (value[key] != undefined)
+            returnValue = value[key];
+    });
+
+    return returnValue;
+}

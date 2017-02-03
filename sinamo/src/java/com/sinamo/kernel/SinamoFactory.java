@@ -15,7 +15,6 @@ import com.sinamo.sys.json.Script;
 import com.sinamo.sys.json.Section;
 import java.io.File;
 import java.nio.file.Files;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

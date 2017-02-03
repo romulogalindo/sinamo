@@ -5,7 +5,7 @@
         <source type="DBSQL" server="127.0.0.1" port="5432" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql"/>
     </syssource>
     <sources>
-        <source type="DBSQL" server="190.40.141.107" port="1988" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql"/>
+        <!--<source type="DBSQL" server="190.40.141.107" port="1988" dbname="SINAMO" user="rgalindo" pass="W41t3Kn1g4t" engine="postgresql"/>-->
 <!--        <source type="NOSQL" url="jdbc:postgresql://190.40.141.107:1988/SINAMO" user="rgalindo" pass="W41t3Kn1g4t"/>
         <source type="xls" url="file://home/romulogalindo/super.xlsx" pass="W41t3Kn1g4t"/>
         <source type="txt" url="file://home/romulogalindo/lista.txt"/>
