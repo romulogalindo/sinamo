@@ -1,15 +1,12 @@
 package com.sinamo.sys.servlet;
 
-import com.google.gson.Gson;
 import com.sinamo.mods.Module;
 import com.sinamo.kernel.Application;
 import com.sinamo.kernel.SinamoApplication;
-import com.sinamo.kernel.SinamoFactory;
 import com.sinamo.log.Log;
 import com.sinamo.transa.SimpleTransaction;
 import java.io.IOException;
 import java.util.HashMap;
-import javax.script.Invocable;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,8 +49,6 @@ public class LinkManagerServlet extends DefaultSinamoServlet {
         //consulta a la cache!(en un futuro primero cache y luego db si no esta!!)
         Module module = sinamoApp.getModule(simpleRequest.getRA());
 
-//        //!-- Esto debe de modificarse
-//        module.setPid(System.currentTimeMillis());
         try {
             //ejecuta el JS asignado para este modulo >> 
             Log.log(_log + " Ejecutando JS-DB");
@@ -62,36 +57,6 @@ public class LinkManagerServlet extends DefaultSinamoServlet {
 
             //Pintar el contenido! en el form ya creado
             module.getContent().getForm().draw(dataMap, module.getActions());
-
-//            ModuleList _module = (ModuleList) module;
-//            for (SectionList sectionList : _module.getSections()) {
-//                sectionList.getRegisters().clear();
-//                ListItem listItem = sectionList.getListItem();
-//                System.out.println("listItem > " + listItem);
-//                String _r = listItem.getTitle().split("\\$")[1];
-//                System.out.println("_r = " + _r);
-//                System.out.println("_rs.get(_r) = " + dataMap.get(_r));
-//
-//                String _titleKey = listItem.getTitle().split("\\$").length == 3 ? listItem.getTitle().split("\\$")[2].replace("{", "").replace("}", "") : "";
-//                String _title2Key = listItem.getTitle2().split("\\$").length == 3 ? listItem.getTitle2().split("\\$")[2].replace("{", "").replace("}", "") : "";
-//                String _title3Key = listItem.getTitle3().split("\\$").length == 3 ? listItem.getTitle3().split("\\$")[2].replace("{", "").replace("}", "") : "";
-//                String _iconKey = listItem.getIcon().split("\\$").length == 3 ? listItem.getIcon().split("\\$")[2].replace("{", "").replace("}", "") : "";
-//                String _valueKey = listItem.getValue().split("\\$").length == 3 ? listItem.getValue().split("\\$")[2].replace("{", "").replace("}", "") : "";
-//
-//                List<HashMap> ls = (List<HashMap>) dataMap.get(_r);
-//                for (HashMap map : ls) {
-//                    ListItem _listItem = new ListItem();
-//
-//                    System.out.println("[" + _titleKey + ":" + map.get(_titleKey) + "]");
-//                    _listItem.setTitle(map.get(_titleKey) != null ? map.get(_titleKey).toString() : "");
-//                    _listItem.setTitle2(map.get(_title2Key) != null ? map.get(_title2Key).toString() : "");
-//                    _listItem.setTitle3(map.get(_title3Key) != null ? map.get(_title3Key).toString() : "");
-//                    _listItem.setIcon(map.get(_iconKey) != null ? map.get(_iconKey).toString() : "");
-//                    _listItem.setValue(map.get(_valueKey) != null ? map.get(_valueKey).toString() : "");
-//
-//                    sectionList.addRegister(_listItem);
-//                }
-//            }
         } catch (Exception ep) {
             ep.printStackTrace();
         }
@@ -115,36 +80,43 @@ public class LinkManagerServlet extends DefaultSinamoServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        //transa
+        SimpleTransaction transa = new SimpleTransaction();
+
+        //log
+        String _log = "[" + this.getClass().getSimpleName() + ":" + request.getServletPath() + "][" + transa.getTransactionId() + "]";
+
+        //variables iniciales!
+        SinamoApplication sinamoApp = (SinamoApplication) application;
+        //!-- debe cambiar por un simplepostrequest
+        SimpleRequest simpleRequest = new SimpleRequest(request);
+
+        Log.log(_log + " ra << " + simpleRequest.getRA());
+
+        //transa-initial values;
+        transa.setInput(request);
+
+        //Guardando
+        sinamoApp.saveTransa(transa);
+
         System.out.println("request post recibido");
         String jsonOBject = request.getParameter("jsonOBject");
-        String funcName = null;
+        String funcName = request.getParameter("func");
+        String transaId = request.getParameter("transaId");
 
-        Invocable invocable = (Invocable) SinamoFactory.getSimanoEngine().getScriptEngine();
         try {
-            funcName = (String) invocable.invokeFunction("_goto", jsonOBject);
-            System.out.println("rpta = " + funcName);
+            //ejecuta el JS asignado para este modulo >> 
+            Log.log(_log + " Ejecutando JS-DB");
+            String resp = (String) sinamoApp.getJSService().executeFunction("_act" + funcName, jsonOBject, transaId);
+            System.out.println("resp = " + resp);
+
+            response.getOutputStream().print(resp);
         } catch (Exception ep) {
             ep.printStackTrace();
         }
 
-        Object responseGoto = null;
-        try {
-            responseGoto = invocable.invokeFunction(funcName, jsonOBject);
-            System.out.println("rpta = " + responseGoto);
-            System.out.println("rpta = " + responseGoto.getClass());
-        } catch (Exception ep) {
-            ep.printStackTrace();
-        }
-
-        response.getOutputStream().print(new Gson().toJson(responseGoto));
         response.getOutputStream().close();
 
-//        Enumeration<String> enu = request.getParameterNames();
-//        while (enu.hasMoreElements()) {
-//            String k = enu.nextElement();
-//            String v = request.getParameter(k);
-//            System.out.println("k=" + k + ",v=" + v);
-//        }
     }
 
     /**

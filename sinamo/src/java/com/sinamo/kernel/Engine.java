@@ -4,12 +4,17 @@ import com.google.gson.Gson;
 import com.sinamo.bean.Module;
 import com.sinamo.bean.items.Action;
 import com.sinamo.bean.items.MenuItem;
+import com.sinamo.dto.TbFunction;
 import com.sinamo.dto.TbModulo;
 import com.sinamo.dto.VwMenuModulo;
+import com.sinamo.mods.BooleanRegister;
 import com.sinamo.mods.ButtonAction;
+import com.sinamo.mods.ComboRegister;
 import com.sinamo.mods.DefaultList;
 import com.sinamo.mods.DefaultSection;
 import com.sinamo.mods.DynamicListForm;
+import com.sinamo.mods.HiddenRegister;
+import com.sinamo.mods.InputRegister;
 import com.sinamo.mods.LinkAction;
 import com.sinamo.mods.Register;
 import com.sinamo.mods.SectionForm;
@@ -100,7 +105,7 @@ public class Engine {
 
             //Script de accion
             nashronScript = nashronScript + " function _act" + _module.getId() + "(_requestStringValue){"
-                    + (_module.getAction() == null ? "" : _module.getAction())
+                    //                    + (_module.getAction() == null ? "" : _module.getAction())
                     + "}";
 
             for (Action action : module.getActions()) {
@@ -139,7 +144,9 @@ public class Engine {
         /*Menus*/
         List<VwMenuModulo> lsmenus = ss.getNamedQuery(Native.VWMENUMODULO_ALL).list();
         List<TbModulo> vwmodule = ss.getNamedQuery(Native.TBMODULO_ALL).list();
-
+        for (TbModulo _module : vwmodule) {
+            _module.setFunctions(ss.getNamedQuery(Native.TBFUNCTION_BYID).setInteger("_id", _module.getId()).list());
+        }
         //Cierre de conexion
         ss.close();
 
@@ -221,11 +228,48 @@ public class Engine {
                         Iterator _registers = ((JSONArray) _section.get("registers")).iterator();
                         while (_registers.hasNext()) {
                             JSONObject _register = (JSONObject) _registers.next();
-                            Register register = new Register();
-                            register.setTitle(_register.get("title").toString());
-                            register.setType(_register.get("type").toString());
-                            register.setValue(_register.get("value").toString());
-                            defaultSection.addRegister(register);
+                            String _typeRegister = _register.get("type").toString();
+                            switch (_typeRegister) {
+                                case "input": {
+                                    InputRegister register = new InputRegister();
+                                    register.setTitle(_register.get("title").toString());
+                                    register.setType(_register.get("type").toString());
+                                    register.setValue(_register.get("value").toString());
+                                    register.setName(_register.get("name").toString());
+                                    defaultSection.addRegister(register);
+                                    break;
+                                }
+                                case "hidden": {
+                                    HiddenRegister register = new HiddenRegister();
+                                    register.setType(_register.get("type").toString());
+                                    register.setValue(_register.get("value").toString());
+                                    register.setName(_register.get("name").toString());
+                                    defaultSection.addRegister(register);
+                                    break;
+                                }
+                                case "boolean": {
+                                    BooleanRegister register = new BooleanRegister();
+                                    register.setTitle(_register.get("title").toString());
+                                    register.setType(_register.get("type").toString());
+                                    //!-- falta
+                                    register.setValue(false);
+                                    register.setName(_register.get("name").toString());
+                                    defaultSection.addRegister(register);
+                                    break;
+                                }
+                                case "combo": {
+                                    ComboRegister register = new ComboRegister();
+                                    register.setTitle(_register.get("title").toString());
+                                    register.setType(_register.get("type").toString());
+                                    //!-- falta
+                                    register.setValues(new ArrayList<>());
+                                    register.setName(_register.get("name").toString());
+                                    defaultSection.addRegister(register);
+                                    break;
+                                }
+                                default:
+                                    break;
+                            }
                         }
 
                         sectionForm.addSection(defaultSection);
@@ -241,17 +285,23 @@ public class Engine {
                 //Script de creacion
                 String dataScriptName = "_func" + _module.getId();
                 nashronScript = nashronScript + " function " + dataScriptName + "(_requestStringValue){\n"
-                        + "var responsedatamap = new java.util.HashMap();"
-                        + "var request = JSON.parse(_requestStringValue);"
+                        + "var responsedatamap = new java.util.HashMap();\n"
+                        + "var request = JSON.parse(_requestStringValue);\n"
                         + (_module.getData() == null ? "" : _module.getData())
-                        + "return responsedatamap;"
-                        + "}";
+                        + "return responsedatamap;\n"
+                        + "}\n\n";
                 _mod.setDataScriptName(dataScriptName);
 
                 //Script de accion
-                nashronScript = nashronScript + " function _act" + _module.getId() + "(_requestStringValue){"
-                        + (_module.getAction() == null ? "" : _module.getAction())
-                        + "}";
+                for (TbFunction function : _module.getFunctions()) {
+                    nashronScript = nashronScript + " function _act" + function.getId() + "(_requestStringValue, transaId){\n"
+                            + "var request = JSON.parse(_requestStringValue);\n"
+                            + "var returnUrl = '';\n"
+                            + (function.getFunction() == null ? "" : function.getFunction()) + "\n"
+                            + "return returnUrl;\n"
+                            + "}\n\n";
+
+                }
 
 //            for (Action action : module.getActions()) {
 //                action.setDoit("execute(sJS.build(this,'" + action.getId() + "','_act" + _module.getId() + "'))");

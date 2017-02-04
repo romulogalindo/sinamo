@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.StatelessSession;
+import org.hibernate.Transaction;
 
 /**
  * SinamoFactory
@@ -231,6 +232,28 @@ public class SinamoFactory {
             for (Object obj : result) {
                 System.out.println("obj = " + obj.getClass() + "(" + obj + ")");
             }
+        } catch (Exception ep) {
+            ep.printStackTrace();
+        }
+        try {
+            session.close();
+        } catch (Exception ep) {
+            ep.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static int SQL_UPDATE(String connectorName, String query) {
+        StatelessSession session = null;
+        int result = -1;
+        try {
+            session = simanoEngine.connectors.get(connectorName).getSessionFactory().openStatelessSession();
+            Transaction transa = session.beginTransaction();
+            SQLQuery q = session.createNativeQuery(query);
+            q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            result = q.executeUpdate();
+            transa.commit();
         } catch (Exception ep) {
             ep.printStackTrace();
         }

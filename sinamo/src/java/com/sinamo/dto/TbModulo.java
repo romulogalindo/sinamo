@@ -2,10 +2,12 @@ package com.sinamo.dto;
 
 import com.sinamo.sys.db.Native;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.Transient;
 
 /**
  * TbModulo
@@ -27,7 +29,9 @@ public class TbModulo implements Serializable {
     String name;
     String script;
     String data;
-    String action;
+
+    @Transient
+    List<TbFunction> functions;
 
     public TbModulo() {
     }
@@ -64,12 +68,12 @@ public class TbModulo implements Serializable {
         this.data = data;
     }
 
-    public String getAction() {
-        return action;
+    public List<TbFunction> getFunctions() {
+        return functions;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setFunctions(List<TbFunction> functions) {
+        this.functions = functions;
     }
 
     @Override

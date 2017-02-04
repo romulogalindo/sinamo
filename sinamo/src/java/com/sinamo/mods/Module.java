@@ -18,6 +18,10 @@ public class Module implements Serializable, Cloneable {
     String dataScriptName;
 
     public Module() {
+        head = null;
+        content = null;
+        actions = null;
+        dataScriptName = null;
     }
 
     public Head getHead() {
@@ -56,11 +60,11 @@ public class Module implements Serializable, Cloneable {
     public String toString() {
         return "Module{" + "head=" + head + ", content=" + content + ", actions=" + actions + '}';
     }
-    
+
     @Override
-    public Module clone() throws CloneNotSupportedException{
-         Module moduleClone = (Module) super.clone();
-         return moduleClone;
+    public Module clone() throws CloneNotSupportedException {
+        Module moduleClone = (Module) super.clone();
+        return moduleClone;
     }
 
 }

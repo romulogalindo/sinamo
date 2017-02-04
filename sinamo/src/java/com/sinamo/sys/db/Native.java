@@ -13,6 +13,8 @@ public abstract class Native {
 //    public String TBMODULO_ALL;
     public static final String TBMODULO_ALL = "system.tbmodulo";
     public static final String TBMENU_ALL = "system.tbmenu";
+    public static final String TBFUNCTION_ALL = "system.tbfunction";
+    public static final String TBFUNCTION_BYID = "system.tbfunction_byid";
     public static final String VWMENUMODULO_ALL = "system.vwmenumodulo";
 
     public abstract Configuration getConfiguration();

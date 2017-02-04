@@ -23,16 +23,23 @@
                     ${_module.head.title}
                 </h2>
             </div>
-            <c:forEach var="section" items="${_module.content.form.sections}">
+            <c:forEach var="section" items="${_module.content.form.sections}" varStatus="ix">
                 <div class="mdl-card__supporting-text">
                     <h4 class="mdl-card__subtitle-text sinamo-card--center">
                         ${section.title}
                     </h4>
-                    <c:forEach var="register" items="${section.registers}">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sample1" value="${register.value}">
-                            <label class="mdl-textfield__label" for="sample1">${register.title}</label>
-                        </div>
+                    <c:forEach var="register" items="${section.registers}" varStatus="ix2">
+                        <c:choose>
+                            <c:when test="${register.type =='input'}">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}">
+                                    <label class="mdl-textfield__label" for="sample1">${register.title}</label>
+                                </div>
+                            </c:when>
+                            <c:when test="${register.type =='hidden'}">
+                                <input type="hidden" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}">
+                            </c:when>
+                        </c:choose>
                     </c:forEach>
                 </div>
             </c:forEach>
@@ -45,7 +52,7 @@
                         </button>
                     </c:if>
                     <c:if test="${action.value.type == 'button' }">
-                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
                             ${action.value.title}
                         </button>
                     </c:if>

@@ -68,5 +68,25 @@ function Sinamo() {
     this.goto = function (url) {
         window.location.href = url;
     };
+
+    this.call = function (funcName, transaId) {
+        //conseguir todos los objetos en base al transaId,
+        var jsonValues = '{"params":[';
+        $("input[id^='" + transaId + "_']").each(function (index) {
+            var key = $(this).attr('id').replace(transaId + "_", "");
+            var val = $(this).val();
+            jsonValues = jsonValues + '{"' + key + '":"' + val + '"},';
+        });
+        jsonValues = jsonValues.substring(0, jsonValues.length - 1);
+        jsonValues = jsonValues + "]}";
+        console.log('json creado:' + jsonValues);
+
+        $.post("snm?func=" + funcName + "&transaId=" + transaId, {jsonOBject: jsonValues}, function (data) {
+            console.log('rpta=' + data);
+            snm.goto(data);
+        });
+
+//        alert('estamos ejecutando!!');
+    };
 }
 var snm = new Sinamo();

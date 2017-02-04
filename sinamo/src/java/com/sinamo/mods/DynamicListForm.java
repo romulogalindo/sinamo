@@ -11,13 +11,14 @@ import java.util.regex.Pattern;
  * @author Romulo Galindo Tanta
  * @create Jan 27, 2017 7:25:42 PM
  */
-public class DynamicListForm extends Form implements Serializable {
+public class DynamicListForm extends Form implements Serializable, Cloneable {
 
     List<DefaultList> list;
     DefaultList baseList;
 
     public DynamicListForm() {
-        list = new ArrayList<>();
+        list = null;
+        baseList = null;
     }
 
     public List<DefaultList> getList() {
@@ -36,6 +37,13 @@ public class DynamicListForm extends Form implements Serializable {
         this.baseList = baseList;
     }
 
+    public void addList(DefaultList ls) {
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(ls);
+    }
+
     @Override
     public String toString() {
         return "DynamicListForm{" + "list=" + list + '}';
@@ -44,6 +52,7 @@ public class DynamicListForm extends Form implements Serializable {
     @Override
     public void draw(HashMap dataMap, Map<Integer, Action> actions) {
         if (baseList != null) {
+//            list = null;
             //Obtenemos el Key
             String keyDataMap = baseList.getTitle().split("\\$")[1];
 
@@ -85,10 +94,15 @@ public class DynamicListForm extends Form implements Serializable {
                 _listItem.setAction(_actionKey.replaceAll(Pattern.quote("${value}"), _listItem.getValue()));
                 System.out.println("_listItem =>>> " + _listItem.getAction());
 
-                list.add(_listItem);
+                addList(_listItem);
             }
         }
         System.out.println("list = " + list);
     }
 
+    @Override
+    public Form clone() throws CloneNotSupportedException {
+        DynamicListForm formClone = (DynamicListForm) super.clone();
+        return formClone;
+    }
 }

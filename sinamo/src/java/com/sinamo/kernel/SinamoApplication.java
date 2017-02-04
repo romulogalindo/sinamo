@@ -3,13 +3,22 @@ package com.sinamo.kernel;
 import com.sinamo.mods.Module;
 import com.sinamo.bean.items.MenuItem;
 import com.sinamo.log.Log;
+import com.sinamo.mods.Content;
+import com.sinamo.mods.DynamicListForm;
+import com.sinamo.mods.SectionForm;
 import com.sinamo.transa.Transaction;
 import com.sinamo.units.ApplicationXMLUnit;
 import com.sinamo.units.ServiceXMLUnit;
 import com.sinamo.util.ReaderXML;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Romulo Galindo Tanta
@@ -123,10 +132,23 @@ public class SinamoApplication extends Application {
     public Module getModule(Integer idModule) {
         Module module = null;
         try {
-            module = ((Module) this.getCacheService().getCache(CacheService.CACHE_MODULONAME).get(idModule)).clone();
+            Module moduleBase = ((Module) this.getCacheService().getCache(CacheService.CACHE_MODULONAME).get(idModule)).clone();
+            module = (Module) copy(moduleBase);
         } catch (Exception ep) {
         }
         return module;
+    }
+
+    public static Object copy(Object fromBean) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        XMLEncoder out = new XMLEncoder(bos);
+        out.writeObject(fromBean);
+        out.close();
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+        XMLDecoder in = new XMLDecoder(bis);
+        Object toBean = in.readObject();
+        in.close();
+        return toBean;
     }
 
     public void saveTransa(Transaction transa) {

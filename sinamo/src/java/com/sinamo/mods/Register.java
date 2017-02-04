@@ -7,21 +7,11 @@ import java.io.Serializable;
  *
  * @author romulogalindo
  */
-public class Register implements Serializable {
+public class Register implements Serializable, Cloneable {
 
-    String title;
     String type;
-    String value;
 
     public Register() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getType() {
@@ -32,12 +22,10 @@ public class Register implements Serializable {
         this.type = type;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    @Override
+    public Register clone() throws CloneNotSupportedException {
+        Register registerClone = (Register) super.clone();
+        return registerClone;
     }
 
 }

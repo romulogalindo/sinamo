@@ -53,6 +53,20 @@
                     </c:forEach>
                 </ul>
             </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <c:forEach var="action" items="${_module.actions}">
+                    <c:if test="${action.value.type == 'linkbutton'}">
+                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            ${action.value.title}
+                        </button>
+                    </c:if>
+                    <c:if test="${action.value.type == 'button' }">
+                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            ${action.value.title}
+                        </button>
+                    </c:if>
+                </c:forEach>
+            </div>
             <%--</c:forEach>--%>
 
             <!--div class="mdl-card__actions mdl-card--border">
