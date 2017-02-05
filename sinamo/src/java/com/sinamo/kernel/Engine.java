@@ -16,7 +16,6 @@ import com.sinamo.mods.DynamicListForm;
 import com.sinamo.mods.HiddenRegister;
 import com.sinamo.mods.InputRegister;
 import com.sinamo.mods.LinkAction;
-import com.sinamo.mods.Register;
 import com.sinamo.mods.SectionForm;
 import com.sinamo.sys.db.Native;
 import com.sinamo.sys.db.SysDBConector;
@@ -178,6 +177,7 @@ public class Engine {
                         _btnact.setType(_act.get("type").toString());
                         _btnact.setTitle(_act.get("title").toString());
                         _btnact.setFunc(_act.get("func").toString());
+                        _btnact.setConfirm(_act.get("confirm").toString());
                         _actions.put(_btnact.getId(), _btnact);
                     } else if (_act.get("type").toString().contentEquals("link")) {
                         com.sinamo.mods.LinkAction _btnact = new LinkAction();
@@ -230,7 +230,8 @@ public class Engine {
                             JSONObject _register = (JSONObject) _registers.next();
                             String _typeRegister = _register.get("type").toString();
                             switch (_typeRegister) {
-                                case "input": {
+                                case "input":
+                                case "text": {
                                     InputRegister register = new InputRegister();
                                     register.setTitle(_register.get("title").toString());
                                     register.setType(_register.get("type").toString());

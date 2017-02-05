@@ -36,6 +36,26 @@
                                     <label class="mdl-textfield__label" for="sample1">${register.title}</label>
                                 </div>
                             </c:when>
+                            <c:when test="${register.type =='text'}">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <textarea class="mdl-textfield__input" type="text" rows="3" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}">${register.value}</textarea>
+                                    <label class="mdl-textfield__label" for="sample5">${register.title}</label>
+                                </div>
+                            </c:when>
+                            <c:when test="${register.type =='combo'}">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth getmdl-select__fix-height">
+                                    <input class="mdl-textfield__input" type="text" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}" readonly tabIndex="-1">
+                                    <label for="${_transa.transactionId}_${register.name}">
+                                        <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                    </label>
+                                    <label for="${_transa.transactionId}_${register.name}" class="mdl-textfield__label">${register.title}</label>
+                                    <ul for="${_transa.transactionId}_${register.name}" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                        <c:forEach items="${register.values}" var="value">
+                                            <li class="mdl-menu__item" data-val="${value.val}">${value.name}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </c:when>
                             <c:when test="${register.type =='hidden'}">
                                 <input type="hidden" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}">
                             </c:when>
@@ -47,12 +67,12 @@
             <div class="mdl-card__actions mdl-card--border">
                 <c:forEach var="action" items="${_module.actions}">
                     <c:if test="${action.value.type == 'linkbutton'}">
-                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                             ${action.value.title}
                         </button>
                     </c:if>
                     <c:if test="${action.value.type == 'button' }">
-                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}', ${action.value.confirm})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                             ${action.value.title}
                         </button>
                     </c:if>

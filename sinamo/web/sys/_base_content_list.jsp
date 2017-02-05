@@ -39,15 +39,15 @@
                         <li id="${_transa.transactionId}_${ix.count}" class="mdl-list__item mdl-list__item--two-line" onclick="snm.goto('${item.action}')">
                             <input type="hidden" id="${_transa.transactionId}_${ix.count}_v" name="${_transa.transactionId}_${ix.count}_v" value="${item.value}" />
                             <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-avatar">${tiem.icon}</i>
+                                <i class="material-icons mdl-list__item-icon">${item.icon}</i>
                                 <span>${item.title}</span>
                                 <span class="mdl-list__item-sub-title">${item.stitle}</span>
                             </span>
                             <span class="mdl-list__item-secondary-content">
                                 <span class="mdl-list__item-secondary-info">${item.status}</span>
-                                <!--                                    <a class="mdl-list__item-secondary-action" href="#">
-                                                                        <i class="material-icons">star</i>
-                                                                    </a>-->
+                                <!--                                <a class="mdl-list__item-secondary-action" href="#">
+                                                                    <i class="material-icons">star</i>
+                                                                </a>-->
                             </span>
                         </li>
                     </c:forEach>
@@ -56,12 +56,12 @@
             <div class="mdl-card__actions mdl-card--border">
                 <c:forEach var="action" items="${_module.actions}">
                     <c:if test="${action.value.type == 'linkbutton'}">
-                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <button  id="${action.value.id}" onclick="snm.goto('${action.value.url}')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                             ${action.value.title}
                         </button>
                     </c:if>
                     <c:if test="${action.value.type == 'button' }">
-                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}')" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <button  id="${action.value.id}" onclick="snm.call('${action.value.func}', '${_transa.transactionId}')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                             ${action.value.title}
                         </button>
                     </c:if>

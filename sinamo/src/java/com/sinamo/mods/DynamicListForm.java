@@ -57,20 +57,20 @@ public class DynamicListForm extends Form implements Serializable, Cloneable {
             String keyDataMap = baseList.getTitle().split("\\$")[1];
 
             //obtenemos los keyElements
-            String _titleKey = baseList.getTitle().split("\\$")[2].replace("{", "").replace("}", "");
-            String _title2Key = baseList.getStitle().split("\\$")[2].replace("{", "").replace("}", "");
-            String _title3Key = baseList.getStatus().split("\\$")[2].replace("{", "").replace("}", "");
-            String _iconKey = baseList.getIcon().split("\\$")[2].replace("{", "").replace("}", "");
-            String _valueKey = baseList.getValue().split("\\$")[2].replace("{", "").replace("}", "");
+            String _titleKey = baseList.getTitle().split("\\$").length > 1 ? baseList.getTitle().split("\\$")[2].replace("{", "").replace("}", "") : "";
+            String _title2Key = baseList.getStitle().split("\\$").length > 1 ? baseList.getStitle().split("\\$")[2].replace("{", "").replace("}", "") : "";
+            String _title3Key = baseList.getStatus().split("\\$").length > 1 ? baseList.getStatus().split("\\$")[2].replace("{", "").replace("}", "") : "";
+            String _iconKey = baseList.getIcon().split("\\$").length > 1 ? baseList.getIcon().split("\\$")[2].replace("{", "").replace("}", "") : "";
+            String _valueKey = baseList.getValue().split("\\$").length > 1 ? baseList.getValue().split("\\$")[2].replace("{", "").replace("}", "") : "";
             String _actionKey = "";
 
             if (baseList.getActionId() != null) {
 //                Action action = actions.get(baseList.getActionId());
-                System.out.println("actions = " + actions);
-                System.out.println("baseList.getActionId() = " + baseList.getActionId());
-                System.out.println("baseList.getActionId() = " + actions.get(baseList.getActionId()));
-                System.out.println("baseList.getActionId() = " + actions.get(baseList.getActionId()).getType());
-                System.out.println("baseList.getActionId() = " + (actions.get(baseList.getActionId()).getType().contentEquals("link")));
+//                System.out.println("actions = " + actions);
+//                System.out.println("baseList.getActionId() = " + baseList.getActionId());
+//                System.out.println("baseList.getActionId() = " + actions.get(baseList.getActionId()));
+//                System.out.println("baseList.getActionId() = " + actions.get(baseList.getActionId()).getType());
+//                System.out.println("baseList.getActionId() = " + (actions.get(baseList.getActionId()).getType().contentEquals("link")));
                 if (actions.get(baseList.getActionId()).getType().contentEquals("link")) {
                     LinkAction action = (LinkAction) actions.get(baseList.getActionId());
                     _actionKey = action.getUrl();
@@ -83,7 +83,7 @@ public class DynamicListForm extends Form implements Serializable, Cloneable {
             for (HashMap map : ls) {
                 DefaultList _listItem = new DefaultList();
 
-                System.out.println("[" + _titleKey + ":" + map.get(_titleKey) + "]");
+                System.out.println("[" + _titleKey + ":" + map.get(_titleKey) + ":" + map.get(_iconKey) + "]");
                 _listItem.setTitle(map.get(_titleKey) != null ? map.get(_titleKey).toString() : "");
                 _listItem.setStitle(map.get(_title2Key) != null ? map.get(_title2Key).toString() : "");
                 _listItem.setStatus(map.get(_title3Key) != null ? map.get(_title3Key).toString() : "");
@@ -92,7 +92,7 @@ public class DynamicListForm extends Form implements Serializable, Cloneable {
                 _listItem.setActionId(Integer.SIZE);
                 //.replaceAll("\\${value}", _valueKey)
                 _listItem.setAction(_actionKey.replaceAll(Pattern.quote("${value}"), _listItem.getValue()));
-                System.out.println("_listItem =>>> " + _listItem.getAction());
+                System.out.println("_listItem =>>> " + _listItem.getAction() + "|" + _listItem.getIcon());
 
                 addList(_listItem);
             }

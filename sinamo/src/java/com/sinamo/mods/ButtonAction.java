@@ -7,6 +7,7 @@ package com.sinamo.mods;
 public class ButtonAction extends Action {
 
     String func;
+    String confirm = "false";
 
     public String getFunc() {
         return func;
@@ -14,6 +15,14 @@ public class ButtonAction extends Action {
 
     public void setFunc(String func) {
         this.func = func;
+    }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
     }
 
 }

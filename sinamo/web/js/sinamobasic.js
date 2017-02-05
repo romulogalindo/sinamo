@@ -69,24 +69,53 @@ function Sinamo() {
         window.location.href = url;
     };
 
-    this.call = function (funcName, transaId) {
+    this.call = function (funcName, transaId, confirm) {
         //conseguir todos los objetos en base al transaId,
+        if (confirm) {
+            //mandar todo al dialog!
+//            document.querySelector('#snm_dialog_1A_SI').removeEventListener('click');
+            document.querySelector('#snm_dialog_1A_SI').addEventListener('click', function () {
+                snm.btnAction(funcName, transaId);
+            });
+            dialog1A.showModal();
+        } else {
+            snm.btnAction(funcName, transaId);
+        }
+//        alert('estamos ejecutando!!');
+    };
+
+    this.btnAction = function (funcName, transaId) {
+        //pantalla de carga
+        dialog1A.close();
+        snm.showLoading();
+        
         var jsonValues = '{"params":[';
         $("input[id^='" + transaId + "_']").each(function (index) {
             var key = $(this).attr('id').replace(transaId + "_", "");
             var val = $(this).val();
             jsonValues = jsonValues + '{"' + key + '":"' + val + '"},';
         });
+
         jsonValues = jsonValues.substring(0, jsonValues.length - 1);
         jsonValues = jsonValues + "]}";
+
         console.log('json creado:' + jsonValues);
 
         $.post("snm?func=" + funcName + "&transaId=" + transaId, {jsonOBject: jsonValues}, function (data) {
             console.log('rpta=' + data);
             snm.goto(data);
         });
+    };
 
-//        alert('estamos ejecutando!!');
+    this.showLoading = function () {
+        $('#snm_bg_loading').show();
+        $('#snm_loading').show();
+    };
+
+    this.hideLoading = function () {
+        $('#snm_bg_loading').hide();
+        $('#snm_loading').hide();
     };
 }
+
 var snm = new Sinamo();

@@ -36,15 +36,19 @@
         <link rel="canonical" href="http://www.example.com/">
         -->
 
-<!--        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue-indigo.min.css" /> -->
+        <!--        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+                <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue-indigo.min.css" /> -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <!--<link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.css">-->
+
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js"></script>-->
         <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-       <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dialog-polyfill.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/material.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/getmdl-select.min.css">
         <style>
             .demo-avatar {
                 width: 48px;
@@ -159,13 +163,52 @@
             .mdl-list__item--two-line:hover {
                 background-color: #eee;
             }
+
+            .loading{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -50px;
+                margin-left: -50px;
+                width: 100px;
+                height: 100px;
+                z-index: 200002;
+                display: none;
+            }
         </style>
 
         <script src="${pageContext.request.contextPath}/js/material.js"></script>
+        <script src="${pageContext.request.contextPath}/js/getmdl-select.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery3.1.1.js"></script>
-        <script src="${pageContext.request.contextPath}/js/sinamobasic.js?a=1"></script>
+        <script src="${pageContext.request.contextPath}/js/sinamobasic.js?a=2"></script>
+        <script src="${pageContext.request.contextPath}/js/dialog-polyfill.js"></script>
     </head>
     <body>
+        <dialog id="snm_dialog_1A" class="mdl-dialog">
+            <h4 class="mdl-dialog__title">Importante</h4>
+            <div class="mdl-dialog__content">
+                <p>
+                    Seguro de realizar esta acci&oacute;n?
+                </p>
+            </div>
+            <div class="mdl-dialog__actions">
+                <button type="button" class="mdl-button" id="snm_dialog_1A_SI">Si</button>
+                <button type="button" class="mdl-button close">No</button>
+            </div>
+        </dialog>
+        
+        <div id="snm_loading" class="loading">
+            <h4 class="mdl-dialog__title" style="text-align: center;">
+                <div class="mdl-spinner mdl-js-spinner is-active"></div>
+            </h4>
+            <div class="mdl-dialog__content" style="padding-top: 0px;padding-right: 0px;padding-left: 0px;text-align: center;">
+                <p style="">
+                    Cargando
+                </p>
+            </div>
+        </div>
+        <div id="snm_bg_loading" class="backdrop" style="z-index: 200001;position: fixed;top: 0;right: 0;bottom: 0;left: 0;background: rgba(0,0,0,0.1);display: none;"></div>
+
         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
             <!-- Header custom for each module -->
             <jsp:include page="_base_header.jsp"/>
