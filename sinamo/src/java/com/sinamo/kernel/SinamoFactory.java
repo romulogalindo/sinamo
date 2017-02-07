@@ -33,15 +33,15 @@ import org.hibernate.Transaction;
  */
 public class SinamoFactory {
 
-    static final Engine simanoEngine;
+//    static final Engine simanoEngine;
 
-    static {
-        simanoEngine = new Engine(new Native_PLSQL());
-    }
+//    static {
+//        simanoEngine = new Engine(new Native_PLSQL());
+//    }
 
-    public static Engine getSimanoEngine() {
-        return simanoEngine;
-    }
+//    public static Engine getSimanoEngine() {
+//        return simanoEngine;
+//    }
 
     public static Module buildModule(Script script) {
         Module module = null;
@@ -225,7 +225,7 @@ public class SinamoFactory {
         StatelessSession session = null;
         List result = null;
         try {
-            session = simanoEngine.connectors.get(connectorName).getSessionFactory().openStatelessSession();
+            session = Sinamo.getApplication("Sinamo").getDataService().getDataBaseSources().get(connectorName).getSession();
             SQLQuery q = session.createNativeQuery(query);
             q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             result = q.list();
@@ -248,7 +248,7 @@ public class SinamoFactory {
         StatelessSession session = null;
         int result = -1;
         try {
-            session = simanoEngine.connectors.get(connectorName).getSessionFactory().openStatelessSession();
+            session = Sinamo.getApplication("Sinamo").getDataService().getDataBaseSources().get(connectorName).getSession();
             Transaction transa = session.beginTransaction();
             SQLQuery q = session.createNativeQuery(query);
             q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);

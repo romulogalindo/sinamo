@@ -43,17 +43,14 @@
                                 </div>
                             </c:when>
                             <c:when test="${register.type =='combo'}">
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth getmdl-select__fix-height">
-                                    <input class="mdl-textfield__input" type="text" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}" readonly tabIndex="-1">
-                                    <label for="${_transa.transactionId}_${register.name}">
-                                        <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                                    </label>
-                                    <label for="${_transa.transactionId}_${register.name}" class="mdl-textfield__label">${register.title}</label>
-                                    <ul for="${_transa.transactionId}_${register.name}" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+
+                                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                                    <select class="mdl-selectfield__select" id="${_transa.transactionId}_${register.name}" name="${_transa.transactionId}_${register.name}" value="${register.value}">
                                         <c:forEach items="${register.values}" var="value">
-                                            <li class="mdl-menu__item" data-val="${value.val}">${value.name}</li>
+                                            <option value="${value.key}" ${register.value == value.key ?'selected':''} >${value.value}</option>
                                         </c:forEach>
-                                    </ul>
+                                    </select>
+                                    <label class="mdl-selectfield__label" for="professsion2">Profession</label>
                                 </div>
                             </c:when>
                             <c:when test="${register.type =='hidden'}">

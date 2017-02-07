@@ -213,6 +213,7 @@ public class ReaderXML {
         xml.setUser(attr.getNamedItem("user") != null ? attr.getNamedItem("user").getNodeValue() : "");
         xml.setPassword(attr.getNamedItem("pass") != null ? attr.getNamedItem("pass").getNodeValue() : "");
         xml.setEngine(attr.getNamedItem("engine") != null ? attr.getNamedItem("engine").getNodeValue() : "");
+        xml.setName(attr.getNamedItem("name") != null ? attr.getNamedItem("name").getNodeValue() : "");
         return xml;
     }
 

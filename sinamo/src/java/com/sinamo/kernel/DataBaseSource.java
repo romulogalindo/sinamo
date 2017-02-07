@@ -71,6 +71,8 @@ public class DataBaseSource extends Source implements DataBase {
         config.addAnnotatedClass(com.sinamo.dto.TbModulo.class);
         config.addAnnotatedClass(com.sinamo.dto.TbMenu.class);
         config.addAnnotatedClass(com.sinamo.dto.TbFunction.class);
+        config.addAnnotatedClass(com.sinamo.dto.TbDataGrid.class);
+        config.addAnnotatedClass(com.sinamo.dto.DataGrid.class);
         config.addAnnotatedClass(com.sinamo.dto.VwMenuModulo.class);
 
         Properties prop = config.getProperties();

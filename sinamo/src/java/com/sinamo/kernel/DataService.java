@@ -3,7 +3,6 @@ package com.sinamo.kernel;
 import com.sinamo.log.Log;
 import com.sinamo.units.DataServiceXMLUnit;
 import com.sinamo.units.SourceXMLUnit;
-import com.sinamo.util.ReaderXML;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class DataService extends Service {
         dataBaseSources = new HashMap<>();
         for (SourceXMLUnit sourceXmlUnit : configuratorXml.getSources()) {
             DataBaseSource dataBaseSource = new DataBaseSource(sourceXmlUnit);
-            dataBaseSources.put(sourceXmlUnit.getServer() + "_" + sourceXmlUnit.getDbname(), dataBaseSource);
+            dataBaseSources.put(sourceXmlUnit.getName(), dataBaseSource);
 
             //Luego de crearla conectarse!
             boolean dbConnected = dataBaseSource.connect();

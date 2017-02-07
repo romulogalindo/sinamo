@@ -2,6 +2,7 @@ package com.sinamo.kernel;
 
 import com.sinamo.mods.Module;
 import com.sinamo.bean.items.MenuItem;
+import com.sinamo.dto.TbDataGrid;
 import com.sinamo.log.Log;
 import com.sinamo.transa.Transaction;
 import com.sinamo.units.CacheServiceXMLUnit;
@@ -74,6 +75,12 @@ public class CacheService extends Service {
         caches.put(CACHE_TRANSANAME, cache_transa);
         Log.log(_log + " Cache creada > nombre=" + CACHE_TRANSANAME + ", key=Integer, value=Module");
 
+        //Cache para datagrid
+        Object cache_datagrid = cacheManager.createCache(CACHE_DATAGRID,
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(Integer.class, TbDataGrid.class, ResourcePoolsBuilder.heap(Long.MAX_VALUE)).build());
+        caches.put(CACHE_DATAGRID, cache_datagrid);
+        Log.log(_log + " Cache creada > nombre=" + CACHE_DATAGRID + ", key=Integer, value=Module");
+
 //        ((Cache) caches.get("transaction")).put(1L, new String("Hell!!"));
 //        ((Cache) caches.get("transaction")).put(2L, new String("Hell!!"));
 //        Log.log("exis=" + ((Cache) caches.get("transaction")).get(1L));
@@ -136,4 +143,5 @@ public class CacheService extends Service {
     public static final String CACHE_MENUNAME = "@lsmenu";
     public static final String CACHE_MODULONAME = "@lsmodule";
     public static final String CACHE_TRANSANAME = "@transa";
+    public static final String CACHE_DATAGRID = "@datagrid";
 }

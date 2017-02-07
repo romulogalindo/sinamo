@@ -1,12 +1,15 @@
 package com.sinamo.mods;
 
+import com.sinamo.dto.DataGrid;
+import com.sinamo.dto.TbDataGrid;
+import com.sinamo.kernel.CacheService;
+import com.sinamo.kernel.Sinamo;
 import com.sinamo.log.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.hibernate.StatelessSession;
 
 /**
  * @author Romulo Galindo Tanta
@@ -52,6 +55,20 @@ public class SectionForm extends Form implements Cloneable {
                         ((InputRegister) register).setValue(getValue(dataMap, ((InputRegister) register).getValue()));
                     } else if (register.getType().contentEquals("hidden")) {
                         ((HiddenRegister) register).setValue(getValue(dataMap, ((HiddenRegister) register).getValue()));
+                    } else if (register.getType().contentEquals("combo")) {
+                        ComboRegister comboRegister = (ComboRegister) register;
+                        ((ComboRegister) register).setValue(getValue(dataMap, ((ComboRegister) register).getValue()));
+
+                        TbDataGrid tbDataGrid = (TbDataGrid) Sinamo.getApplication("Sinamo").getCacheService().getCache(CacheService.CACHE_DATAGRID).get(Integer.parseInt(comboRegister.getData()));
+                        if (tbDataGrid.isEstatico()) {
+                            //conseguir de este lado los elementos
+                            ((ComboRegister) register).setValues(tbDataGrid.getDatagrids());
+                        } else {
+                            //hacer un select
+                            StatelessSession ss = Sinamo.getApplication("Sinamo").getDataService().getDataBaseSources().get("_native").getSession();
+                            ((ComboRegister) register).setValues(ss.createNativeQuery(tbDataGrid.getQuery()).addEntity(DataGrid.class).list());
+                            ss.close();
+                        }
                     }
                 }
             }

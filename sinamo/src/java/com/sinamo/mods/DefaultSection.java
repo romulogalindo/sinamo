@@ -1,17 +1,14 @@
 package com.sinamo.mods;
 
-import com.sinamo.log.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Romulo Galindo Tanta
  * @create Feb 3, 2017 12:09:22 AM
  */
-public class DefaultSection implements Serializable, Cloneable {
+public class DefaultSection implements Serializable {
 
     String title;
     List<Register> registers;
@@ -40,19 +37,6 @@ public class DefaultSection implements Serializable, Cloneable {
             registers = new ArrayList<>();
         }
         registers.add(register);
-    }
-
-    @Override
-    public DefaultSection clone() throws CloneNotSupportedException {
-        DefaultSection sectionClone = (DefaultSection) super.clone();
-//        getRegisters().forEach(r -> {
-//            try {
-//                sectionClone.addRegister(r.clone());
-//            } catch (Exception ep) {
-//                Log.error(ep, ep);
-//            }
-//        });
-        return sectionClone;
     }
 
 }

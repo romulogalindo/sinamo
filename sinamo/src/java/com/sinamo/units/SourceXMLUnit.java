@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class SourceXMLUnit implements Serializable {
 
+    String name;
     String type;
     String server;
     String port;
@@ -17,6 +18,14 @@ public class SourceXMLUnit implements Serializable {
     String engine;
 
     public SourceXMLUnit() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {

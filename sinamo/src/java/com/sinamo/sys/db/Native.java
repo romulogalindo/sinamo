@@ -15,6 +15,8 @@ public abstract class Native {
     public static final String TBMENU_ALL = "system.tbmenu";
     public static final String TBFUNCTION_ALL = "system.tbfunction";
     public static final String TBFUNCTION_BYID = "system.tbfunction_byid";
+    public static final String TBDATAGRID_ALL = "system.tbdatagrid";
+    public static final String TBDATAGRID_BYID = "system.tbdatagrid_byid";
     public static final String VWMENUMODULO_ALL = "system.vwmenumodulo";
 
     public abstract Configuration getConfiguration();
